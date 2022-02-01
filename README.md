@@ -75,9 +75,10 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * Lecture 3 video from last year's meeting on slack
   - [Practice Notes](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/lec03.Rmd)
 * Lecture 2 video from last year's meeting on slack
-  - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)
-* Lecture 1 video from last year's meeting on slack
-  - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec01kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec01mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec01gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec01wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec01montes.pdf)-->
+  - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)-->
+* Week 1 [Practice Notes](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week01.Rmd)
+* Lecture 2
+* Lecture 1 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec01kap.pdf)
 
 
 ## Labs
