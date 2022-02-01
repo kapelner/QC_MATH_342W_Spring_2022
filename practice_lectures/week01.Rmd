@@ -1,7 +1,7 @@
 ---
-title: "Practice Lecture 3 MATH 342W Queens College"
+title: "Practice Lectures Week 1 MATH 342W Queens College"
 author: "Professor Adam Kapelner"
-date: "February 4, 2021"
+date: "Jan 28, 2022"
 ---
 
 You can get started with this cheatsheet:
@@ -56,7 +56,7 @@ and
 9
 ```
 
-These are not the most exciting command. The above is called a "chunk" and it tells the R Markdown compiler that there is R code inside those tick marks.
+These are not the most exciting commands. The above is called a "chunk" and it tells the R Markdown compiler that there is R code inside those tick marks.
 
 Here's some R code commented:
 
@@ -73,7 +73,7 @@ Let's start by using R as a calculator
 5 - 5
 5 / 5
 5 * 5
-5^5 #or 5 ** 5 (not common)
+5^5 #or 5 ** 5 (not as common)
 5 / 3
 100 * (1 + 0.03)^5
 5 %% 3
