@@ -76,8 +76,10 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
   - [Practice Notes](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/lec03.Rmd)
 * Lecture 2 video from last year's meeting on slack
   - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)-->
+
+
 * Week 1 [Practice Notes](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week01.Rmd)
-* Lecture 2
+* Lecture 2 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec02kap.pdf)
 * Lecture 1 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec01kap.pdf)
 
 
@@ -93,8 +95,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)
 * [(Lab 4, due 2/11)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
 * [(Lab 3, due 3/4)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)
-* [(Lab 2, due 2/25)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd)
-* [(Lab 1, due 2/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd)-->
+* [(Lab 2, due 2/25)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd)-->
+* [(Lab 1, due 2/13)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd)
 
 ## Theory Homeworks
 
@@ -102,9 +104,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * Homework 5 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw05/hw05t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw05/hw05t.pdf) (*not* due)
 * Homework 4 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw04/hw04t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw04/hw04t.pdf) (*not* due)
 * Homework 3 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw03/hw03t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw03/hw03t.pdf) (due 4/7)
-* Homework 2 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw02/hw02t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw02/hw02t.pdf) (due 3/7)
-* Homework 1 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw01/hw01t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw01/hw01t.pdf) (due 2/11) 
-* Homework 0 [(syllabus, page 7)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/syllabus/syllabus.pdf?raw=true) (due 1/31)-->
+* Homework 2 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw02/hw02t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw02/hw02t.pdf) (due 3/7)-->
+* Homework 1 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw01/hw01t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw01/hw01t.pdf) (due 2/10)
 
 ## Writing Assignments
 
@@ -139,7 +140,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 I *want* you to come to office hours! My office hours are:
 
 Time / Location: Mon/Wed 4:30-4:50PM / KY 283\
-Time / Location: Mon/Wed 8:05-8:30PM / KY 283\
+Time / Location: Mon/Wed 8:05-8:30PM / KY 061\
 
 In addition, the TAs will hold office hours as well:
 
