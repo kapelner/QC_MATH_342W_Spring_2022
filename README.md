@@ -78,8 +78,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
   - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)-->
 
 * Week 2 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week02.Rmd)
-* Lecture 4 
-* Lecture 3 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec03kap.pdf)
+* Lecture 4/5 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec05kap.pdf)
+* Lecture 3/4 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec04kap.pdf)
 * Week 1 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week01.Rmd)
 * Lecture 2 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec02kap.pdf)
 * Lecture 1 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec01kap.pdf)
