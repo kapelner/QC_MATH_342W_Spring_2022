@@ -77,6 +77,9 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * Lecture 2 video from last year's meeting on slack
   - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)-->
 
+* Week 3 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week03.Rmd)
+
+* Lecture 5/6 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec06kap.pdf)
 * Week 2 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week02.Rmd)
 * Lecture 4/5 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec05kap.pdf)
 * Lecture 3/4 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec04kap.pdf)
@@ -96,8 +99,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Midterm I Review Lab, *not* due)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/midterm1review.Rmd)
 * [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)
 * [(Lab 4, due 2/11)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
-* [(Lab 3, due 3/4)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)
-* [(Lab 2, due 2/25)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd)-->
+* [(Lab 3, due 3/4)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)-->
+* [(Lab 2, due 2/20)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd)
 * [(Lab 1, due 2/13)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd)
 
 ## Theory Homeworks

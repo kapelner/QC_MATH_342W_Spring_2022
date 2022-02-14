@@ -2,7 +2,7 @@
 title: "Lab 1"
 author: "Your Name Here"
 output: pdf_document
-date: "11:59PM February 13, 2021"
+date: "11:59PM February 13"
 ---
 
 You should have RStudio installed to edit this file. You will write code in places marked "TO-DO" to complete the problems. Most of this will be a pure programming assignment but there are some questions that instead ask you to "write a few sentences". This is a W class! The tools for the solutions to these problems can be found in the class practice lectures. I prefer you to use the methods I taught you. If you google and find esoteric code you don't understand, this doesn't do you too much good.
