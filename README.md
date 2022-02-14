@@ -114,7 +114,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 
 ## Writing Assignments
 
-* Modeling Essay [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf) (draft due 3/21, revision due 10d after draft is graded) [(example essay)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_example.pdf)
+* Modeling Essay [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf) (draft due 3/20, revision due 10d after draft is graded) [(example essay)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_example.pdf)
 * Final Project [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/final_project.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/final_project.pdf) (due 5/25 by email)
 
 ## Exams
