@@ -77,7 +77,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * Lecture 2 video from last year's meeting on slack
   - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)-->
 
-* Week 3 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week03.Rmd) [Practice Notes in Python part a](https://qcmath342wspring2022.slack.com/files/U02VCLRQYR5/F033JGXQCMP/5_-_python_practice_lecture_5_math_342w_queens_college_-_threshold___perceptron.ipynb) [Practice Notes in Python part b](https://qcmath342wspring2022.slack.com/files/U02VCLRQYR5/F033884TRHA/6_-_python_practice_lecture_6_math_342w_queens_college_-_knn___svm.ipynb)
+* Week 3 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week03.Rmd) [Practice Notes in Python part a]() [Practice Notes in Python part b]()
 
 * Lecture 5/6 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec06kap.pdf)
 * Week 2 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week02.Rmd) [Practice Notes in Python](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Practice%20Notes/4%20-%20Python%20Practice%20Lecture%204%20MATH%20342W%20Queens%20College%20-%20More%20Data%20Structures%2C%20Pandas%20and%20Functions.ipynb)
@@ -100,8 +100,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)
 * [(Lab 4, due 2/11)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
 * [(Lab 3, due 3/4)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)-->
-* Lab 2, due 2/20 [R language](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd) [Python language](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%202%20-%20Python%20Lab.ipynb)
-* Lab 1, due 2/13 [R language](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd) [Python language](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%201%20-%20Python%20Lab.ipynb)
+* Lab 2, due 2/20 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%202%20-%20Python%20Lab.ipynb)
+* Lab 1, due 2/13 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%201%20-%20Python%20Lab.ipynb)
 
 ## Theory Homeworks
 
