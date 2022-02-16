@@ -6,41 +6,6 @@ date: "February 24, 2021"
 
 
 
-Let's take a look at another dataset.
-
-```{r}
-?MASS::Cars93
-cars = MASS::Cars93
-cars
-```
-
-Usually, we are trying to build a model for `Price`. Let's see how `Horsepower` is related to price:
-
-```{r}
-pacman::p_load(ggplot2)
-ggplot(cars, aes(Horsepower, Price)) + 
-  geom_point() + 
-  geom_smooth(method = 'lm')
-```
-
-
-```{r}
-simple_linear_model = lm(Price ~ Horsepower, data = cars)
-coef(simple_linear_model)
-summary(simple_linear_model)$r.squared
-summary(simple_linear_model)$sigma
-```
-
-62\% is pretty good $R^2$! But the RMSE is about \$6,000. Using the empirical rule heuristic, that means you can only predict within $\pm \$12,000$ around 95\% of the time. Not so good!
-
-# Predictions with linear models in R
-
-After the model is fit, you may want to predict with it using the $g$ function. Of course R can do this:
-
-```{r}
-predict(simple_linear_model, data.frame(Horsepower = 200)) #i.e. g(400)
-predict(simple_linear_model, data.frame(Horsepower = c(200, 300, 500))) #i.e. g(200), g(300), g(500)
-```
 
 ##Simple regression with nominal variables
 
