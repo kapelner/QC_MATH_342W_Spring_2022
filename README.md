@@ -100,7 +100,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)
 * [(Lab 4, due 2/11)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
 * [(Lab 3, due 3/4)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)-->
-* Lab 2, due 2/20 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%202%20-%20Python%20Lab.ipynb)
+* Lab 2, due 2/24 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%202%20-%20Python%20Lab.ipynb)
 * Lab 1, due 2/13 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%201%20-%20Python%20Lab.ipynb)
 
 ## Theory Homeworks
