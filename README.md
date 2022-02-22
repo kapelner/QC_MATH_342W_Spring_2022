@@ -120,7 +120,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 ## Exams
 
 * Midterm I is Wed, Mar 23 (in class) 
-* Midterm II is Thurs, May 16 (in class) 
+* Midterm II is Mon, May 16 (in class) 
 
 
 ## Practice Exams
