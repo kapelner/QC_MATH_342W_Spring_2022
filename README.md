@@ -145,12 +145,12 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 I *want* you to come to office hours! My office hours are:
 
 Time / Location: Mon/Wed 4:30-4:50PM / KY 283\
-Time / Location: Mon/Wed 8:05-8:30PM / KY 061\
+Time / Location: Mon/Wed 8:05-8:30PM / KY 061
 
 In addition, the TAs will hold office hours as well:
 
 Kennly's Time / Location: Fri 1:30-2:30PM / on zoom\
-Amir's Time / Location: Tues 6-7PM / on zoom\
+Amir's Time / Location: Tues 6-7PM / on zoom
 
 ## Grades and Class Standing
 
