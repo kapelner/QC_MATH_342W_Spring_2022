@@ -77,8 +77,9 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * Lecture 2 video from last year's meeting on slack
   - Theory Notes [(Prof)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kap.pdf) [(Elizabeth McHugh)](https://github.com/ejmchugh/QC_Math_342W_Spring_2022/blob/master/lectures/lec02mchugh.pdf) [(Brendan Gubbins)](https://github.com/brendangubbins/QC_Math_342W_Spring_2022/blob/master/lectures/lec02gubbins.pdf) [(Hanlin Wang)](https://github.com/Hanlin-Wang/QC_Math_342W_Spring_2022/blob/master/lectures/lec02wang.pdf) [(Alexis Montes)](https://github.com/AlexNYC25/QC_Math_342W_Spring_2022/blob/master/lectures/lec02montes.pdf) [(Enoch Kim)](https://github.com/derpnoch/QC_Math_342W_Spring_2022/blob/master/lectures/lec02kim.pdf)-->
 
+* Lecture 12/13 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec11kap.pdf)
 * Week 6 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week06.Rmd) 
-* Lecture 9/10 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec10kap.pdf)
+* Lecture 9/10/11 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec10kap.pdf)
 * Week 5 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week05.Rmd) 
 * Lecture 8/9 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec09kap.pdf)
 * Lecture 8/9 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec08kap.pdf)
@@ -103,7 +104,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Lab 6, due 4/15)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab06.Rmd)
 * [(Midterm I Review Lab, *not* due)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/midterm1review.Rmd)
 * [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)-->
-* Lab 4, due 3/12 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
+* Lab 4, due 3/13 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
 * Lab 3, due 3/06 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)
 * Lab 2, due 2/24 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%202%20-%20Python%20Lab.ipynb)
 * Lab 1, due 2/13 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab01.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%201%20-%20Python%20Lab.ipynb)
