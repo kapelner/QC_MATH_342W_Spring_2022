@@ -113,8 +113,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 
 <!--
 * Homework 5 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw05/hw05t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw05/hw05t.pdf) (*not* due)
-* Homework 4 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw04/hw04t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw04/hw04t.pdf) (*not* due)
-* Homework 3 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw03/hw03t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw03/hw03t.pdf) (due 4/7)-->
+* Homework 4 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw04/hw04t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw04/hw04t.pdf) (*not* due)-->
+* Homework 3 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw03/hw03t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw03/hw03t.pdf) (due 3/21)
 * Homework 2 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw02/hw02t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw02/hw02t.pdf) (due 3/3)
 * Homework 1 [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw01/hw01t.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/homeworks/hw01/hw01t.pdf) (due 2/10)
 
