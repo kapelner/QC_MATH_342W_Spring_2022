@@ -102,8 +102,8 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Lab 8, due 4/29)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab08.Rmd)
 * [(Lab 7, due 4/22)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab07.Rmd)
 * [(Lab 6, due 4/15)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab06.Rmd)
-* [(Midterm I Review Lab, *not* due)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/midterm1review.Rmd)
 * [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)-->
+* [(Midterm I Review Lab, *not* due)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/midterm1review.Rmd)
 * Lab 4, due 3/13 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
 * Lab 3, due 3/06 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)
 * Lab 2, due 2/24 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab02.Rmd) [(Python language)](https://github.com/sfnxboy/342-2022-Python-Practice-lectures/blob/main/Labs/Lab%202%20-%20Python%20Lab.ipynb)
@@ -120,7 +120,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 
 ## Writing Assignments
 
-* Modeling Essay [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf) (draft due 3/20, revision due 10d after draft is graded) [(example essay)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_example.pdf)
+* Modeling Essay [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_revised.pdf) (draft due 3/27, revision due 10d after draft is graded) [(example essay)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/modeling_essay_example.pdf)
 * Final Project [(download)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/final_project.pdf?raw=true) [(view)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/writing_assignments/final_project.pdf) (due 5/25 by email)
 
 ## Exams
