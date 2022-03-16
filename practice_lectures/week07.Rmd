@@ -256,48 +256,63 @@ This is called overfitting.
 Let's see how overfitting increases generalized estimation error.
 
 ```{r}
+rm(list = ls())
 set.seed(1)
 bbeta = c(1, 2, 3, 4)
 
 #build training data
 n = 100
 X = cbind(1, rnorm(n), rnorm(n), rnorm(n))
-y = X %*% bbeta + rnorm(n, 0, 0.3)
+y = X %*% bbeta + rnorm(n, 0, 0.3) #y_vec_past = X_past beta_vec + epsilon_vec_past
 #\amthbb{D}
 
 #build test data
 n_star = 1000
 X_star = cbind(1, rnorm(n_star), rnorm(n_star), rnorm(n_star))
-y_star = X_star %*% bbeta + rnorm(n_star, 0, 0.3)
+y_star = X_star %*% bbeta + rnorm(n_star, 0, 0.3) #y_vec_future = X_future beta_vec + epsilon_vec_future
 
-all_betas = matrix(NA, n, n)
-all_betas[4, 1 : 4] = coef(lm(y ~ 0 + X))
+#stationarity assumed i.e. 
+#beta_vec, process to generate X's, process to generate epsilons same from past to future
+
+all_bs = matrix(NA, n, n)
+all_bs[4, 1 : 4] = coef(lm(y ~ 0 + X))
 in_sample_rmse_by_p = array(NA, n)
 for (j in 5 : n){
   X = cbind(X, rnorm(n))
   lm_mod = lm(y ~ 0 + X)
-  all_betas[j, 1 : j] = coef(lm_mod)
-  y_hat = X %*% all_betas[j, 1 : j]
+  all_bs[j, 1 : j] = coef(lm_mod)
+  y_hat = X %*% all_bs[j, 1 : j]
   in_sample_rmse_by_p[j] = sqrt(mean((y - y_hat)^2))
 }
+pacman::p_load(ggplot2)
 ggplot(data.frame(num_features = 1 : n, in_sample_rmse_by_p = in_sample_rmse_by_p)) + 
   geom_point(aes(x = num_features, y = in_sample_rmse_by_p))
 
 
-all_betas[4 : n, 1 : 10]
-b_error_by_p = rowSums((all_betas[, 1 : 4] - matrix(rep(bbeta, n), nrow = n, byrow = TRUE))^2)
+bbeta
+all_bs[4 : 100, 1 : 8]
+b_error_by_p = rowSums((all_bs[, 1 : 4] - matrix(rep(bbeta, n), nrow = n, byrow = TRUE))^2)
 ggplot(data.frame(num_features = 1 : n, b_error_by_p = b_error_by_p)) + 
   geom_point(aes(x = num_features, y = b_error_by_p))
 
 #look at out of sample error with random features too
 oos_rmse_by_p = array(NA, n)
+X_star = cbind(X_star, matrix(rnorm(n_star * (n - 4)), nrow = n_star))
 for (j in 5 : n){
   X_star = cbind(X_star, rnorm(n))
-  y_hat_star = X_star %*% all_betas[j, 1 : j]
+  y_hat_star = X_star[, 1 : j] %*% all_bs[j, 1 : j]
   oos_rmse_by_p[j] = sqrt(mean((y_star - y_hat_star)^2))
 }
 ggplot(data.frame(num_features = 1 : n, oos_rmse_by_p = oos_rmse_by_p)) + 
   geom_point(aes(x = num_features, y = oos_rmse_by_p))
+
+#both together
+plot_obj = ggplot(data.frame(num_features = 1 : n, in_sample_rmse_by_p = in_sample_rmse_by_p, oos_rmse_by_p = oos_rmse_by_p)) + 
+  geom_line(aes(x = num_features, y = oos_rmse_by_p), color = "darkgreen") + 
+  geom_line(aes(x = num_features, y = in_sample_rmse_by_p), color = "red")
+plot_obj
+
+plot_obj + xlim(0, 20) + ylim(0.25, 0.35)
 ```
 
 Let's look at overfitting from another angle. Let's generate a linear model ($f = h^* \in \mathcal{H}$) and let $\epsilon$ be random noise (the error due to ignorance) for $\mathbb{D}$ featuring $n = 2$.
@@ -463,7 +478,7 @@ Now what happens if we add a random predictor?
 Okay - but how bad? It only depends on how much $g$ diverges from $h^*$. Let's look at this divergence slowly. We create a new oos data set made from evenly spaced $x$ values across its range and random values of the nonsense predictors. We use this to calculated oos $s_e$.
 
 ```{r}
-p_fake = 98
+p_fake = 2
 set.seed(1984)
 X = data.frame(matrix(c(x, rnorm(n * p_fake)), ncol = 1 + p_fake, nrow = n))
 mod = lm(y ~ ., X)
@@ -560,9 +575,4 @@ MUCH worse!! Why? We overfit big time...
 Can we go back now and fit a new model and see how we did? NO...
 
 So how are we supposed to fix a "bad" model? We can't unless we do something smarter. We'll get there.
-
-
-
-correct the insample RMSE demo above...
-
 
