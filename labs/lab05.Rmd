@@ -49,13 +49,13 @@ ggplot(diamonds, aes(x = carat, y = price)) +
   geom_point()
 ```
 
-Create a linear model of price ~ carat and gauge its performance using s_e.
+Create a linear model of price ~ carat and gauge its in-sample performance using s_e.
 
 ```{r}
 #TO-DO
 ```
 
-Create a model of price ~ clarity and gauge its performance
+Create a model of price ~ clarity and gauge its in-sample performance
 
 ```{r}
 #TO-DO
@@ -84,7 +84,6 @@ Verify this by comparing R^2 and RMSE of the two models:
 ```
 
 Create a new transformed feature ln_price and plot its estimated density:
-
 
 
 ```{r}
@@ -245,7 +244,7 @@ Comment on what it does and how to use it to do a K-fold CV:
 
 #TO-DO
 
-Do the K-fold cross validationfor model F and compute the overall s_e and s_s_e. 
+Do the K-fold cross validation for model F and compute the overall s_e and s_s_e. 
 
 ```{r}
 #TO-DO
@@ -261,9 +260,4 @@ Imagine using the entire rest of the dataset besides the 2,000 training observat
 #TO-DO
 ggplot(data.frame(s_e_s_F = s_e_s_F)) + geom_histogram(aes(x = s_e_s_F))
 ```
-
-
-
-
-
 
