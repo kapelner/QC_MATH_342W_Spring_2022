@@ -1,6 +1,0 @@
----
-title: "Practice Lecture 14 MATH 342W Queens College"
-author: "Professor Adam Kapelner"
-date: "March 17, 2021"
----
-

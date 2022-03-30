@@ -2,7 +2,6 @@
 title: "Lab 5"
 author: "Your Name Here"
 output: pdf_document
-date: 
 ---
 
 

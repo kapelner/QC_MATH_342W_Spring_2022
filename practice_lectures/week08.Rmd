@@ -810,3 +810,397 @@ summary(mod)$sigma
 ```
 
 Not too much gain.
+
+
+
+# More advanced modeling
+
+
+```{r}
+rm(list = ls())
+pacman::p_load(ggplot2)
+diamonds$cut =      factor(diamonds$cut, ordered = FALSE)
+diamonds$color =    factor(diamonds$color, ordered = FALSE)
+diamonds$clarity =  factor(diamonds$clarity, ordered = FALSE)
+#drop some obviously nonsense observations
+diamonds = diamonds[diamonds$carat <= 2 & diamonds$x != 0 & diamonds$y != 0 & diamonds$z != 0 & diamonds$depth != 0 & diamonds$table != 0,]
+diamonds$ln_price = log(diamonds$price)
+diamonds$ln_carat = log(diamonds$carat)
+diamonds$ln_x = log(diamonds$x)
+diamonds$ln_y = log(diamonds$y)
+diamonds$ln_z = log(diamonds$z)
+diamonds$ln_depth = log(diamonds$depth)
+diamonds$ln_table = log(diamonds$table)
+n = nrow(diamonds)
+set.seed(1984)
+diamonds = diamonds[sample(1 : n), ]
+```
+
+
+Note: I will now model price, not ln_price as ln_price yields residuals that are orders of magnitude. Fitting a good ln_price model will take more time.
+
+```{r}
+#All model formulas for reuse later
+model_formulas = list(
+  A = price ~ ln_carat,
+  B = price ~ ln_carat * clarity,
+  C = price ~ ln_carat * (clarity + cut + color),
+  D = price ~ (ln_carat + ln_x + ln_y + ln_z + ln_depth + ln_table) * (clarity + cut + color),
+  E = price ~ (ln_carat + ln_x + ln_y + ln_z + ln_depth + ln_table + carat + x + y + z + depth + table) * (clarity + cut + color)
+)
+#Model A
+mod = lm(model_formulas[["A"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model B
+mod = lm(model_formulas[["B"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model C
+mod = lm(model_formulas[["C"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model D
+mod = lm(model_formulas[["D"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model E 
+mod = lm(model_formulas[["E"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+```
+
+Big win on E... the reason I think is that now we have a flexible curve for each continuous feature and that curve changes with all the categorical features.
+
+Create model (F) which is the same as before except also include also third degree polynomials of the continuous features interacted with the categorical features and gauge performance against (E). By this time you're getting good with R's formula syntax!
+
+
+```{r}
+#Model F
+model_formulas[["F"]] = price ~ 
+        (ln_carat + ln_x + ln_y + ln_z + ln_depth + ln_table + poly(carat, 3) + poly(x, 3) + poly(y, 3) + poly(z, 3) + poly(depth, 3) + poly(table, 3)) * (cut + color + clarity)
+mod = lm(model_formulas[["F"]], diamonds)
+summary(mod)$sigma
+mod$rank
+```
+
+Can you think of any other way to expand the candidate set curlyH? Discuss.
+
+We now have a very flexible curve for each continuous feature and that curve is fit individually for each level of all categories. We could indeed go further by allowing the levels among cut, color and clarity to interact and further allowing the continous features to interact. 
+
+There is another strategy to increase the complexity of H without using function transforms of the features and interactions... we will have to see after winter break...
+
+We should probably assess oos performance now. Sample 4,000 diamonds and use these to create a training set of 3,600 random diamonds and a test set of 400 random diamonds. Define K and do this splitting:
+
+```{r}
+K = 10
+n_sub = 4000
+set.seed(1984)
+n_test = 1 / K * n_sub
+n_train = n_sub - n_test
+test_indicies = sample(1 : n, n_test)
+train_indicies = sample(setdiff(1 : n, test_indicies), n_train)
+all_other_indicies = setdiff(1 : n, c(test_indicies, train_indicies))
+```
+
+Compute in and out of sample performance for models A-F. Use s_e as the metric (standard error of the residuals). Create a list with keys A, B, ..., F to store these metrics. Remember the performances here will be worse than before since before you're using nearly 52,000 diamonds to build a model and now it's only 3600.
+
+```{r}
+oos_se = list()
+all_models_train = list()
+for (model_idx in LETTERS[1 : 6]){
+  all_models_train[[model_idx]] = lm(model_formulas[[model_idx]], diamonds[train_indicies, ])
+  summary(all_models_train[[model_idx]])$sigma
+  oos_se[[model_idx]] = sd(diamonds$price[test_indicies] - predict(all_models_train[[model_idx]], diamonds[test_indicies, ]))
+}
+oos_se
+```
+
+You computed oos metrics only on n_* = 400 diamonds. What problem(s) do you expect in these oos metrics?
+
+They are variable. And something is wrong with F! Possibly Runge's phenomenon?
+
+To do the K-fold cross validation we need to get the splits right and crossing is hard. I've developed code for this already. Run this code.
+
+```{r}
+set.seed(1984)
+temp = rnorm(n_sub)
+folds_vec = cut(temp, breaks = quantile(temp, seq(0, 1, length.out = K + 1)), include.lowest = TRUE, labels = FALSE)
+head(folds_vec, 100)
+```
+
+Comment on what it does and how to use it to do a K-fold CV:
+
+This code tells you which index is inside of which fold's test set.
+
+Do the K-fold cross validation for all models and compute the overall s_e and s_s_e. 
+
+```{r}
+oos_se = list()
+oos_s_se = list()
+for (model_idx in LETTERS[1 : 6]){
+  e_vec_k = list() #for each one
+  for (k in 1 : K){
+    test_indicies_k = which(folds_vec == k)
+    train_indicies_k = which(folds_vec != k)
+    mod = lm(model_formulas[[model_idx]], diamonds[train_indicies_k, ])
+    e_vec_k[[k]] = sd(diamonds$price[test_indicies_k] - predict(mod, diamonds[test_indicies_k, ]))
+  }
+  oos_se[[model_idx]] = mean(unlist(e_vec_k)) #note: not exactly the overall sd, but close enough
+  oos_s_se[[model_idx]] = sd(unlist(e_vec_k))
+}
+res = rbind(unlist(oos_se), unlist(oos_s_se))
+rownames(res) = c("avg", "sd")
+res
+```
+
+Does K-fold CV help reduce variance in the oos s_e? Discuss.
+
+Yes because it is an average so its standard error is approximately s_e / sqrt(K). It's only approximate since this is the formula for the std err or independent samples and the K oos samples are not exactly independent.
+
+Model F seems more varialbe than all of them. Why? Possibly Runge's phenomenon?
+
+Imagine using the entire rest of the dataset besides the 4,000 training observations divvied up into slices of 400. Measure the oos error for each slice and also plot it.
+
+```{r}
+n_step = 1 / K * n_sub
+oos_se = list()
+ses = list()
+starting_ks = seq(from = 1, to = (length(all_other_indicies) - n_step), by = n_step)
+for (model_idx in LETTERS[1 : 6]){
+  se_k = list() #for each one
+  for (k in 1 : length(starting_ks)){
+    diamonds_k = diamonds[all_other_indicies[starting_ks[k] : (starting_ks[k] + n_step - 1)], ]
+    se_k[[k]] = sd(diamonds_k$price - predict(all_models_train[[model_idx]], diamonds_k))
+  }
+  ses[[model_idx]] = se_k
+  oos_se[[model_idx]] = unlist(se_k)
+}
+
+pacman::p_load(reshape2)
+ggplot(reshape2::melt(oos_se)) + geom_boxplot(aes(x = L1, y = value)) + xlab("model")
+ggplot(reshape2::melt(oos_se)) + geom_boxplot(aes(x = L1, y = value)) + xlab("model") + ylim(0, 5000)
+```
+
+What do we learn from this? Model F is very risky. What exactly is going wrong? Part of the agony of data science is the "debugging" just like when debugging software. But here the errors can be in the modeling too! 
+
+```{r}
+max(unlist(ses[["F"]]))
+k_BAD = which.max(unlist(ses[["F"]]))
+
+diamonds_BAD = diamonds[all_other_indicies[starting_ks[k_BAD] : (starting_ks[k_BAD] + n_step - 1)], ]
+diamonds_BAD
+
+e_BAD = diamonds_BAD$price - predict(all_models_train[[model_idx]], diamonds_BAD)
+tail(sort(abs(e_BAD)))
+diamonds_BAD[which.max(abs(e_BAD)), ]
+
+summary(diamonds[train_indicies, ])
+```
+
+Is it extrapolation? Yes... y = 58.9 and in a cubic function, that would be astronomical. The real mistake is that y = 58.9 is impossible. The data wasn't cleaned. We will have an exercise in that. But this happens all the time and you don't want to be using polynomial functions for this reason since the new data may extrapolate very poorly.
+
+Luckily we won't be dealing with these much longer since there are less risky ways of creating a transformed basis of Xraw.
+
+
+## The K tradeoff
+
+K determines how large the training set is relative to the test set when you're doing honest validation for an algorithm. For now, let's not use K-fold CV, but only examine one split at a time. Consider this simulated dataset with 50 observations:
+
+```{r}
+n = 50
+xmin = 0
+xmax = 4
+# set.seed(1)
+set.seed(1984)
+x = runif(n, xmin, xmax)
+y = 2 + 3 * x^2 + rnorm(n, 0, 0.8)
+Xy = data.frame(x = x, y = y)
+pacman::p_load(ggplot2)
+data_plot = ggplot(Xy) + aes(x = x, y = y) + geom_point()
+data_plot
+```
+
+Note how $f(x)$ is quadratic and there is random noise which is "ignorance error". The random noise will be part of generalization error and can never go away.
+
+If we use OLS with no derived features, then we can at most get $h*(x)$. Let's see what $h^*(x) = \beta_0 + \beta_1 x$ truly is. To do this, we imagine we see an absolute ton of data and run OLS on it.
+
+```{r}
+n_hidden = 1e6
+x_hidden = seq(from = xmin, to = xmax, length.out = n_hidden)
+y_hidden = 2 + 3 * x_hidden^2 + rnorm(n_hidden, 0, 0.8)
+h_star_mod = lm(y_hidden ~ x_hidden)
+coef(h_star_mod)
+```
+
+The fact that $\beta = [-6~12]^\top$ can actually be solved with calculus: $\int_0^4 ((2 + 3x^2) - (b_0 + b_1 x))^2 dx$ and solve for $b0$ and $b1$ explicitly by minimizing.
+
+Plotting that over $\mathbb{D}$ we obtain
+
+```{r}
+data_plot +
+  geom_abline(intercept = coef(h_star_mod)[1], slope = coef(h_star_mod)[2], color = "green")
+```
+
+That is the best we're going to get. However, $g_{final}$ falls far short of it:
+
+```{r}
+g_final_mod = lm(y ~ x)
+coef(g_final_mod)
+```
+
+
+The actual error of g_final can be estimated by imagining tons of future observations:
+
+```{r}
+y_hat_g_final = predict(g_final_mod, data.frame(x = x_hidden))
+gen_error_true = sd(y_hidden - y_hat_g_final)
+gen_error_true
+```
+
+The model $g$ can vary quite a bit as we subsample $\mathbb{D}$ which is what happens when you do train-test splits. It varies a lot because there is large misspecification error. If the model was correctly specified, the results of everything that follows will be less impressive. But in the real world - is your model ever correctly specified? is $f \in \mathcal{H}$?? NO. So this is more realistic.
+
+Now let's let K be small. Let K = 2 meaning even 50-50 split of test and train.
+
+```{r}
+K = 2
+prop_train = (K - 1) / K
+n_train = round(prop_train * n)
+set.seed(123)
+index_train = sample(1 : n, n_train, replace = FALSE)
+index_test = setdiff(1 : n, index_train)
+pacman::p_load(testthat)
+expect_equal(sort(c(index_test, index_train)), 1:n)
+
+x_train = x[index_train]
+y_train = y[index_train]
+Xytrain = data.frame(x = x_train, y = y_train)
+x_test = x[index_test]
+y_test = y[index_test]
+
+g_mod = lm(y ~ ., Xytrain)
+y_hat_g = predict(g_mod, data.frame(x = x_test))
+g_s_e_K_2 = sd(y_test - y_hat_g)
+g_s_e_K_2
+gen_error_true
+```
+
+Although I cooked the books by setting the seed, this realization makes sense. If K=2, I build the model g with half the data than the model g_final. Less data to train on => higher generalization error. How about if K is large. Let's say $K = n / 2$ meaning n_train = 48 and n_test = 2.
+
+```{r}
+K = n / 2
+prop_train = (K - 1) / K
+n_train = round(prop_train * n)
+set.seed(123)
+index_train = sample(1 : n, n_train, replace = FALSE)
+index_test = setdiff(1 : n, index_train)
+pacman::p_load(testthat)
+expect_equal(sort(c(index_test, index_train)), 1:n)
+
+x_train = x[index_train]
+y_train = y[index_train]
+Dtrain = data.frame(x = x_train, y = y_train)
+x_test = x[index_test]
+y_test = y[index_test]
+
+g_mod = lm(y ~ ., Dtrain)
+y_hat_g = predict(g_mod, data.frame(x = x_test))
+g_s_e_K_n_over_2 = sd(y_test - y_hat_g)
+g_s_e_K_2
+g_s_e_K_n_over_2
+gen_error_true
+```
+
+Although I cooked the books again by setting the seed, this also makes sense. More data to train on = less error but still more error than all the data. In reality, there is massive variance over specific splits! Let's run the simulation with these two K values many times.
+
+While we're at it, let's do all K's! Well, what are all the valid K's? If you want to keep the sizes the same, any factorization of n except the trivial 1 since n = 1 * n. A K = 1 would mean there's no split!!! How to find divisors? Of course a package for this.
+
+```{r}
+pacman::p_load(numbers)
+setdiff(divisors(n), 1)
+```
+
+But should we also include the trivial n? Yes K = n is indeed a valid divisor. And this type of CV is called the "leave one out cross validation" (LOOCV). Now we compute the errors over K:
+
+
+```{r}
+Nsim_per_K = 2000
+Kuniqs = setdiff(divisors(n), 1)
+num_Kuniqs = length(Kuniqs)
+Ks = rep(Kuniqs, Nsim_per_K)
+results = data.frame(s_e = rep(NA, Nsim_per_K * num_Kuniqs), K = rep(NA, Nsim_per_K * num_Kuniqs))
+for (i in 1 : length(Ks)){
+  K = Ks[i]
+  prop_train = (K - 1) / K
+  n_train = round(prop_train * n)
+  index_train = sample(1 : n, n_train, replace = FALSE)
+  index_test = setdiff(1 : n, index_train)
+  expect_equal(sort(c(index_test, index_train)), 1:n)
+  
+  x_train = x[index_train]
+  y_train = y[index_train]
+  Xytrain = data.frame(x = x_train, y = y_train)
+  x_test = x[index_test]
+  y_test = y[index_test]
+  
+  g_mod = lm(y ~ ., Xytrain)
+  y_hat_g = predict(g_mod, data.frame(x = x_test))
+  if (length(y_test) == 1){ #for leave one out cross validation
+    g_s_e = abs(y_test - y_hat_g)
+  } else {
+    g_s_e = sd(y_test - y_hat_g)
+  }
+  results[i, ] = c(g_s_e, K)
+}
+```
+
+What are the variabilities? Let's take the average error over each simulated split. 
+
+```{r}
+#don't worry about the following code... we will learn dplyr later...
+pacman::p_load(dplyr)
+results_summary = results %>%
+  group_by(K) %>%
+  summarize(Kavg = mean(s_e), Kse = sd(s_e))
+results_summary
+```
+
+Fix LOOCV metric.
+
+Now let's see what the distributions look like to visualize the means and variances.
+
+```{r}
+sim_plot = ggplot(results) + 
+  aes(x = s_e) +
+  geom_density(aes(fill = factor(K)), alpha = 0.3) + 
+  xlim(0, NA) + 
+  geom_vline(data = results_summary, aes(xintercept = Kavg, color = factor(K)), size = 2)
+sim_plot
+```
+
+The main takeaways are
+
+(1) the std err of generalization error estimate is much lower for low K than high K
+
+With high K, the test set is small meaning the estimate has high variance; with low K, the test set is large meaning you can measure it with low variance.
+
+(2) the average of generalization error estimate is lower for high K than low K
+
+With high K, the training set is large meaning $g$ is closer to g_final and thus has higher expected accuracy; with low K, the training set is small meaning $g$ is further from g_final and thus has lower expected accuracy.
+
+Thus, the tradeoff is bias vs. variance. There are many similar tradeoffs in statistics. We will see one later when we do machine learning.
+
+Is the estimates' accuracy for what we really care about? No... the generalization error of g_final which we picture below:
+
+```{r}
+sim_plot + 
+  geom_vline(xintercept = gen_error_true, col = "white", size = 1)
+```
+
+Remember, g_final's error should be lower than both averages since it uses all the data. But we see above it's higher!
+
+So what happened? Simple... we are mixing apples and oranges. We calculated that white line by looking at one million future observations. We calculated the red and blue distributions by looking at our data only which is a random realization of many such datasets! Thus, our generalization errors are biased based on the specific n observations in D we received. We will see that K-fold helps a bit with this. But there is nothing we can do about it beyond that (besides collect more observations). If you get a weird sample, you get a weird sample!
+
+How would we be able to generate the picture we really want to see? We would run this simulation over many datasets and average. That would be a giant simulation. To show that this is the case, go back and change the seed in the first chunk and rerun. You'll see a different white bar.
+
+What is the main takeaway? K matters because it induces a tradeoff. It shouldn't be too large or too small (as we believe at the moment). And, generalization error estimation is very variable in low n. To see this, go back and increase n.
