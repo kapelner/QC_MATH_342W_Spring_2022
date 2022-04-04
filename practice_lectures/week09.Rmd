@@ -458,7 +458,7 @@ results_summary
 Now let's see what the distributions look like for K = 2
 
 ```{r}
-sim_plot = ggplot(results[results$K == 2, ]) + 
+sim_plot = ggplot(results) + 
   aes(x = s_e) +
   geom_density(aes(fill = factor(K)), alpha = 0.3) + 
   xlim(0, NA) + 
