@@ -810,3 +810,194 @@ summary(mod)$sigma
 ```
 
 Not too much gain.
+
+
+
+# More advanced modeling
+
+
+```{r}
+rm(list = ls())
+pacman::p_load(ggplot2)
+diamonds$cut =      factor(diamonds$cut, ordered = FALSE)
+diamonds$color =    factor(diamonds$color, ordered = FALSE)
+diamonds$clarity =  factor(diamonds$clarity, ordered = FALSE)
+#drop some obviously nonsense observations
+diamonds = diamonds[diamonds$carat <= 2 & diamonds$x != 0 & diamonds$y != 0 & diamonds$z != 0 & diamonds$depth != 0 & diamonds$table != 0,]
+diamonds$ln_price = log(diamonds$price)
+diamonds$ln_carat = log(diamonds$carat)
+diamonds$ln_x = log(diamonds$x)
+diamonds$ln_y = log(diamonds$y)
+diamonds$ln_z = log(diamonds$z)
+diamonds$ln_depth = log(diamonds$depth)
+diamonds$ln_table = log(diamonds$table)
+n = nrow(diamonds)
+set.seed(1984)
+diamonds = diamonds[sample(1 : n), ]
+```
+
+
+Note: I will now model price, not ln_price as ln_price yields residuals that are orders of magnitude. Fitting a good ln_price model will take more time.
+
+```{r}
+#All model formulas for reuse later
+model_formulas = list(
+  A = price ~ ln_carat,
+  B = price ~ ln_carat * clarity,
+  C = price ~ ln_carat * (clarity + cut + color),
+  D = price ~ (ln_carat + ln_x + ln_y + ln_z + ln_depth + ln_table) * (clarity + cut + color),
+  E = price ~ (ln_carat + ln_x + ln_y + ln_z + ln_depth + ln_table + carat + x + y + z + depth + table) * (clarity + cut + color)
+)
+#Model A
+mod = lm(model_formulas[["A"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model B
+mod = lm(model_formulas[["B"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model C
+mod = lm(model_formulas[["C"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model D
+mod = lm(model_formulas[["D"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+#Model E 
+mod = lm(model_formulas[["E"]], diamonds)
+summary(mod)$sigma
+mod$rank #i.e. degrees of freedom  = # vectors in colsp[X] to project onto
+```
+
+Big win on E... the reason I think is that now we have a flexible curve for each continuous feature and that curve changes with all the categorical features.
+
+Create model (F) which is the same as before except also include also third degree polynomials of the continuous features interacted with the categorical features and gauge performance against (E). By this time you're getting good with R's formula syntax!
+
+
+```{r}
+#Model F
+model_formulas[["F"]] = price ~ 
+        (ln_carat + ln_x + ln_y + ln_z + ln_depth + ln_table + poly(carat, 3) + poly(x, 3) + poly(y, 3) + poly(z, 3) + poly(depth, 3) + poly(table, 3)) * (cut + color + clarity)
+mod = lm(model_formulas[["F"]], diamonds)
+summary(mod)$sigma
+mod$rank
+```
+
+Can you think of any other way to expand the candidate set curlyH? Discuss.
+
+We now have a very flexible curve for each continuous feature and that curve is fit individually for each level of all categories. We could indeed go further by allowing the levels among cut, color and clarity to interact and further allowing the continous features to interact. 
+
+There is another strategy to increase the complexity of H without using function transforms of the features and interactions... we will have to see after winter break...
+
+We should probably assess oos performance now. Sample 4,000 diamonds and use these to create a training set of 3,600 random diamonds and a test set of 400 random diamonds. Define K and do this splitting:
+
+```{r}
+K = 10
+n_sub = 4000
+set.seed(1984)
+n_test = 1 / K * n_sub
+n_train = n_sub - n_test
+test_indicies = sample(1 : n, n_test)
+train_indicies = sample(setdiff(1 : n, test_indicies), n_train)
+all_other_indicies = setdiff(1 : n, c(test_indicies, train_indicies))
+```
+
+Compute in and out of sample performance for models A-F. Use s_e as the metric (standard error of the residuals). Create a list with keys A, B, ..., F to store these metrics. Remember the performances here will be worse than before since before you're using nearly 52,000 diamonds to build a model and now it's only 3600.
+
+```{r}
+oos_se = list()
+all_models_train = list()
+for (model_idx in LETTERS[1 : 6]){
+  all_models_train[[model_idx]] = lm(model_formulas[[model_idx]], diamonds[train_indicies, ])
+  summary(all_models_train[[model_idx]])$sigma
+  oos_se[[model_idx]] = sd(diamonds$price[test_indicies] - predict(all_models_train[[model_idx]], diamonds[test_indicies, ]))
+}
+oos_se
+```
+
+You computed oos metrics only on n_* = 400 diamonds. What problem(s) do you expect in these oos metrics?
+
+They are variable. And something is wrong with F! Possibly Runge's phenomenon?
+
+To do the K-fold cross validation we need to get the splits right and crossing is hard. I've developed code for this already. Run this code.
+
+```{r}
+set.seed(1984)
+temp = rnorm(n_sub)
+folds_vec = cut(temp, breaks = quantile(temp, seq(0, 1, length.out = K + 1)), include.lowest = TRUE, labels = FALSE)
+head(folds_vec, 100)
+```
+
+Comment on what it does and how to use it to do a K-fold CV:
+
+This code tells you which index is inside of which fold's test set.
+
+Do the K-fold cross validation for all models and compute the overall s_e and s_s_e. 
+
+```{r}
+oos_se = list()
+oos_s_se = list()
+for (model_idx in LETTERS[1 : 6]){
+  e_vec_k = list() #for each one
+  for (k in 1 : K){
+    test_indicies_k = which(folds_vec == k)
+    train_indicies_k = which(folds_vec != k)
+    mod = lm(model_formulas[[model_idx]], diamonds[train_indicies_k, ])
+    e_vec_k[[k]] = sd(diamonds$price[test_indicies_k] - predict(mod, diamonds[test_indicies_k, ]))
+  }
+  oos_se[[model_idx]] = mean(unlist(e_vec_k)) #note: not exactly the overall sd, but close enough
+  oos_s_se[[model_idx]] = sd(unlist(e_vec_k))
+}
+res = rbind(unlist(oos_se), unlist(oos_s_se))
+rownames(res) = c("avg", "sd")
+res
+```
+
+Does K-fold CV help reduce variance in the oos s_e? Discuss.
+
+Yes because it is an average so its standard error is approximately s_e / sqrt(K). It's only approximate since this is the formula for the std err or independent samples and the K oos samples are not exactly independent.
+
+Model F seems more varialbe than all of them. Why? Possibly Runge's phenomenon?
+
+Imagine using the entire rest of the dataset besides the 4,000 training observations divvied up into slices of 400. Measure the oos error for each slice and also plot it.
+
+```{r}
+n_step = 1 / K * n_sub
+oos_se = list()
+ses = list()
+starting_ks = seq(from = 1, to = (length(all_other_indicies) - n_step), by = n_step)
+for (model_idx in LETTERS[1 : 6]){
+  se_k = list() #for each one
+  for (k in 1 : length(starting_ks)){
+    diamonds_k = diamonds[all_other_indicies[starting_ks[k] : (starting_ks[k] + n_step - 1)], ]
+    se_k[[k]] = sd(diamonds_k$price - predict(all_models_train[[model_idx]], diamonds_k))
+  }
+  ses[[model_idx]] = se_k
+  oos_se[[model_idx]] = unlist(se_k)
+}
+
+pacman::p_load(reshape2)
+ggplot(reshape2::melt(oos_se)) + geom_boxplot(aes(x = L1, y = value)) + xlab("model")
+ggplot(reshape2::melt(oos_se)) + geom_boxplot(aes(x = L1, y = value)) + xlab("model") + ylim(0, 5000)
+```
+
+What do we learn from this? Model F is very risky. What exactly is going wrong? Part of the agony of data science is the "debugging" just like when debugging software. But here the errors can be in the modeling too! 
+
+```{r}
+max(unlist(ses[["F"]]))
+k_BAD = which.max(unlist(ses[["F"]]))
+
+diamonds_BAD = diamonds[all_other_indicies[starting_ks[k_BAD] : (starting_ks[k_BAD] + n_step - 1)], ]
+diamonds_BAD
+
+e_BAD = diamonds_BAD$price - predict(all_models_train[[model_idx]], diamonds_BAD)
+tail(sort(abs(e_BAD)))
+diamonds_BAD[which.max(abs(e_BAD)), ]
+
+summary(diamonds[train_indicies, ])
+```
+
+Is it extrapolation? Yes... y = 58.9 and in a cubic function, that would be astronomical. The real mistake is that y = 58.9 is impossible. The data wasn't cleaned. We will have an exercise in that. But this happens all the time and you don't want to be using polynomial functions for this reason since the new data may extrapolate very poorly.
+
+Luckily we won't be dealing with these much longer since there are less risky ways of creating a transformed basis of Xraw.

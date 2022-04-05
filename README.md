@@ -32,9 +32,9 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 * [(Lab 10, *not* due)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab10.Rmd)
 * [(Lab 9, due 5/10)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab09.Rmd)
 * [(Lab 8, due 4/29)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab08.Rmd)
-* [(Lab 7, due 4/22)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab07.Rmd)
-* [(Lab 6, due 4/15)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab06.Rmd)
-* [(Lab 5, due 3/18)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)-->
+* [(Lab 7, due 4/22)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab07.Rmd)-->
+* [(Lab 6, due 4/10)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab06.Rmd)
+* [(Lab 5, due 4/3)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab05.Rmd)
 * [(Midterm I Review Lab, *not* due)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/midterm1review.Rmd)
 * Lab 4, due 3/13 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab04.Rmd)
 * Lab 3, due 3/06 [(R language)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/labs/lab03.Rmd)
