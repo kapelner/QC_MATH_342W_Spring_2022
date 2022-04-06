@@ -1092,7 +1092,9 @@ No evaluation is done on the final model. It is only used to predict future diam
 We discussed last time the two improvements using CV to the above:
 
 * To reduce variance in the selection process, you make a CV of the selection set. 
-* To reduce variance in the testing process, you make an outer CV of the test set so that the first CV is a nested resampling. This is a lot more coding!
+* To reduce variance in the testing process, you make an outer CV of the test set so that the first CV is a nested resampling. 
+
+This is a lot more coding! But we're in luck because it's done for us already...
 
 ### Using the MLR package for Model selection
 
@@ -1101,17 +1103,22 @@ Can we use MLR for Linear Model Selection?
 Yes, but it is not as nice as I would've liked but it sure beats doing it yourself. I've figured it out by creating my own custom code. Warning: this is the old version of mlr (v2) as I couldn't figure it out in the new version of mlr (mlr3)!!
 
 ```{r}
-pacman::p_load(mlr3verse)
+pacman::p_unload(mlr3verse)
+pacman::p_load(mlr)
 ```
 
 
-First, we create the task:
+First, we create the task and learner
 
 ```{r}
+diamonds$cut = factor(diamonds$cut, ordered = FALSE)
+diamonds$color = factor(diamonds$color, ordered = FALSE)
+diamonds$clarity = factor(diamonds$clarity, ordered = FALSE)
 modeling_task = makeRegrTask(data = diamonds, target = "price") #instantiate the task
 ```
 
 Now we create a new learner which is a wrapper for the linear model with a custom formula. We need to specify learning parameters, a training function (build g) and a predict function. Then we need to add theese functions to the namespace in a way mlr understands.
+
 
 ```{r}
 makeRLearner.regr.custom_ols = function() {
@@ -1181,7 +1188,7 @@ Now we use `mlr3`, the latest version (sorry about before!)
 
 ```{r}
 pacman::p_unload(mlr)
-pacman::p_load(mlr3)
+pacman::p_load(mlr3verse)
 ```
 
 We load the breast cancer dataset from earlier in the class.
@@ -1395,3 +1402,111 @@ colnames(Xmm_train)[predictor_by_iteration[1 : p_opt]]
 What is the "optimal model"?
 
 Can we honestly assess future performance now? No... why? Our test set was really our select set and we don't have a third test set (lab exercise). Inner and outer folding can be done too as we discussed.
+
+
+
+
+###### Ignore
+
+First, we create the task and learner
+
+```{r}
+diamonds$cut = factor(diamonds$cut, ordered = FALSE)
+diamonds$color = factor(diamonds$color, ordered = FALSE)
+diamonds$clarity = factor(diamonds$clarity, ordered = FALSE)
+modeling_task = TaskRegr$new(id = "diamonds", backend = diamonds, target = "price") #instantiate the task
+```
+
+Now we create a new learner which is a wrapper for the linear model with a custom formula. We need to specify learning parameters, a training function (build g) and a predict function. Then we need to add theese functions to the namespace in a way mlr understands.
+
+
+```{r}
+pacman::p_load(R6, mlr3misc, mlr3learners)
+LearnerRegrLMCusotmFormulas = R6Class("LearnerRegrLMCusotmFormulas",
+  inherit = LearnerRegr,
+
+  public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    initialize = function(task) {
+      ps = ps(
+        df          = p_dbl(default = Inf, tags = "predict"),
+        interval    = p_fct(c("none", "confidence", "prediction"), tags = "predict"),
+        level       = p_dbl(default = 0.95, tags = "predict"),
+        model       = p_lgl(default = TRUE, tags = "train"),
+        offset      = p_lgl(tags = "train"),
+        pred.var    = p_uty(tags = "predict"),
+        qr          = p_lgl(default = TRUE, tags = "train"),
+        scale       = p_dbl(default = NULL, special_vals = list(NULL), tags = "predict"),
+        singular.ok = p_lgl(default = TRUE, tags = "train"),
+        x           = p_lgl(default = FALSE, tags = "train"),
+        y           = p_lgl(default = FALSE, tags = "train"),
+        formula     = p_fct(deparse(task$formula()), tags = "train")
+      )
+
+      super$initialize(
+        id = "regr.lm.custom_formulas",
+        param_set = ps,
+        predict_types = c("response", "se"),
+        feature_types = c("logical", "integer", "numeric", "factor", "character")
+      )
+    }
+  ),
+
+  private = list(
+    .train = function(task) {
+      cat("formula", as.character(self$param_set$params$formula$levels[1]), "\n")
+      pv = self$param_set$get_values(tags = "train")
+      if ("weights" %in% task$properties) {
+        pv = insert_named(pv, list(weights = task$weights$weight))
+      }
+      
+      
+
+      invoke(stats::lm,
+        formula = as.formula(self$param_set$params$formula$levels[1]), data = task$data(),
+        .args = pv)
+    },
+
+    .predict = function(task) {
+      pv = self$param_set$get_values(tags = "predict")
+      newdata = mlr3learners:::ordered_features(task, self)
+      se_fit = self$predict_type == "se"
+      prediction = invoke(predict, object = self$model, newdata = newdata, se.fit = se_fit, .args = pv)
+
+      if (se_fit) {
+        list(response = unname(prediction$fit), se = unname(prediction$se.fit))
+      } else {
+        list(response = unname(prediction))
+      }
+    }
+  )
+)
+```
+
+
+
+```{r}
+algorithm = LearnerRegrLMCusotmFormulas$new(modeling_task)
+
+
+validation = rsmp("cv", folds = 5) #instantiate the 5-fold CV
+res = resample(modeling_task, algorithm, validation) #execute
+
+
+pacman::p_load(mlr3tuning)
+resampling = rsmp("holdout")
+# search_space = ps(formula = p_fct(levels = c("price ~ x", "price ~ y", "price ~ z", "price ~ .")))
+# search_space = ps(formula = p_fct(levels = c("price ~ .")))
+search_space = ps(interval = p_fct(c("none", "confidence", "prediction")))
+  
+  
+  
+Kinner = 5
+terminator = trm("evals", n_evals = Kinner)
+tuner = tnr("design_points")
+measure = msr("regr.rmse")
+at = AutoTuner$new(algorithm, resampling, measure, terminator, tuner, search_space)
+at$train(modeling_task)
+```
