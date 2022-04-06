@@ -312,7 +312,7 @@ set.seed(1984)
 Ntest = 1e6
 Kuniqs = setdiff(divisors(n), 1)
 
-Nsim = 5000
+Nsim = 5e6
 
 results = data.frame(s_e = numeric(), K = character())
 
@@ -395,7 +395,7 @@ set.seed(1984)
 Ntest = 1e6
 Kuniqs = setdiff(divisors(n), 1)
 
-Nsim = 3000
+Nsim = 3e6
 
 #we will add to the previous experiment's results
 load("K_dgp_results.RData")
@@ -470,7 +470,7 @@ sim_plot
 
 ## MLR library for CV
 
-"Machine Learning in R" (the `mlr3` package v0.11) is a very popular R library that makes it very simple to build models, do K-fold validation, etc. This package was recently rewritten (September, 2019).
+"Machine Learning in R" (the `mlr3` package v0.11) is a very popular R library that makes it very simple to build models, do K-fold validation, etc.
 
 ```{r}
 pacman::p_load(ggplot2, mlr3verse)
