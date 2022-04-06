@@ -1395,10 +1395,4 @@ colnames(Xmm_train)[predictor_by_iteration[1 : p_opt]]
 
 What is the "optimal model"?
 
-
-
 Can we honestly assess future performance now? No... why? Our test set was really our select set and we don't have a third test set (lab exercise). Inner and outer folding can be done too as we discussed.
-
-
-
-
