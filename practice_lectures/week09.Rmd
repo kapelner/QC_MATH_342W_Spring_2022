@@ -1247,8 +1247,9 @@ This gives us the final hyperparameter value. Then the final model can be traine
 ```{r}
 learner$param_set$values = c(learner$param_set$values, list(cost = at$tuning_result$cost))
 learner$train(task)
+g_final = learner$predict_newdata
 #this created g_final internally and you can predict on it for x-vec* via:
-learner$predict_newdata(cancer[1, ])
+g_final(cancer[1, ])
 ```
 
 
