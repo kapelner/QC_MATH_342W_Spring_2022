@@ -1321,11 +1321,14 @@ rm(list = ls())
 seed = 1984
 set.seed(seed)
 n_samp = 2000
+#note: trees are perfect for ordinal variables! Since it only needs an ordering to do the splits
+#and thus it is immune to different encodings so, just use the standard 1, 2, 3, ...
+#thus there is no need here to cast the ordinal variables cut, color, clarity to nominal variables
 diamonds_samp = diamonds %>% sample_n(n_samp)
 y = diamonds_samp$price
 X = diamonds_samp %>% select(-price)
 
-num_trees = 250
+num_trees = 1000
 mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
 mod_bag
 
@@ -1340,59 +1343,94 @@ mod_rf
 cat("gain: ", (mod_bag$rmse_oob - mod_rf$rmse_oob) / mod_bag$rmse_oob * 100, "%\n")
 ```
 
-This was a fail. RF is sensitive to the number of features tried. Let's try again.
+This was a fail. RF is sensitive to the number of features samples (the hyperparameter mtry). Let's try again.
 
 
 ```{r}
-mod_rf = YARF(X, y, num_trees = num_trees, seed = seed, bootstrap_indices = mod_bag$bootstrap_indices, mtry = )
+#there are 9 total features
+mod_rf = YARF(X, y, num_trees = num_trees, seed = seed, bootstrap_indices = mod_bag$bootstrap_indices, mtry = 8)
 mod_rf
 
 cat("gain: ", (mod_bag$rmse_oob - mod_rf$rmse_oob) / mod_bag$rmse_oob * 100, "%\n")
 ```
 
-For this example, not much. How about on the diamonds dataset? Here the dataset is too big to fit a regression tree. So we'll subsample train and we can subsample test because it's free.
+This is not so impressive. But it is for free. 
 
-```{r}
-rm(list = ls())
-seed = 1
-
-n_train = 1000
-training_indices = sample(1 : nrow(diamonds), n_train)
-diamonds_train = diamonds[training_indices, ]
-y_train = diamonds_train$price
-X_train = diamonds_train %>% select(-price)
-
-num_trees = 500
-mod_bag = YARFBAG(X_train, y_train, num_trees = num_trees, seed = seed, calculate_oob_error = FALSE)
-mod_rf = YARF(X_train, y_train, num_trees = num_trees, seed = seed, calculate_oob_error = FALSE, mtry = 7)
-mod_bag
-mod_rf
-
-diamonds_test = diamonds[setdiff(1 : nrow(diamonds), training_indices), ]
-y_test = diamonds_test$price
-X_test = diamonds_test %>% select(-price)
-
-rmse_bag = sd(y_test - predict(mod_bag, X_test))
-rmse_rf = sd(y_test - predict(mod_rf, X_test))
-cat("gain: ", (rmse_bag - rmse_rf) / rmse_bag * 100, "%\n")
-```
-
-Not much, but real. And I had to play with `mtry` because the default of $p/3$ doesn't work.
-
-If `mtry` it small, the gain may be so small in the rho-multiple on the variance term that it doesn't outweigh the increase in bias. Thus, we underfit a little bit. Thus it's better to stay with just bagging. Here it is on the boston housing data:
+If `mtry` is small, the gain may be so small in the rho-multiple on the variance term that it doesn't outweigh the increase in bias. Thus, we underfit a little bit. Thus it's better to stay with just bagging. Here it is on the boston housing data:
 
 ```{r}
 rm(list = ls())
 y = MASS::Boston$medv
 X = MASS::Boston
 X$medv = NULL
-seed = 1
-num_trees = 500
+seed = 1984
+num_trees = 1000
 mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
 mod_bag
-mod_rf = YARF(X, y, num_trees = num_trees, seed = seed)
+mod_rf = YARF(X, y, num_trees = num_trees, seed = seed, bootstrap_indices = mod_bag$bootstrap_indices, mtry = 10)
 mod_rf
-cat("oob rmse loss:", round((mod_bag$rmse_oob - mod_rf$rmse_oob) / mod_bag$rmse_oob * 100, 3), "%\n")
+cat("oob rmse gain:", round((mod_bag$rmse_oob - mod_rf$rmse_oob) / mod_bag$rmse_oob * 100, 3), "%\n")
 ```
 
+Slightly more impressive. But again it is for free. 
+
+What about for classification models?
+
+```{r}
+rm(list = ls())
+pacman::p_load_gh("coatless/ucidata")
+data(adult)
+adult %<>% 
+  na.omit #kill any observations with missingness
+n_samp = 1000
+seed = 1984
+set.seed(seed)
+adult_samp = adult %>% sample_n(n_samp)
+y = adult_samp$income
+X = adult_samp %>% select(-income)
+
+num_trees = 500
+mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
+#default mtry for classification models is floor(sqrt(p))
+mod_rf = YARF(X, y, num_trees = num_trees, seed = seed, bootstrap_indices = mod_bag$bootstrap_indices) 
+mod_bag$misclassification_error
+mod_rf$misclassification_error
+
+cat("gain: ", (mod_bag$misclassification_error - mod_rf$misclassification_error) / mod_bag$misclassification_error * 100, "%\n")
+```
+
+Very nice... and can likely be improved with optimizing mtry.
+
+And on letters:
+
+```{r}
+rm(list = ls())
+pacman::p_load(mlbench, skimr)
+data(LetterRecognition)
+LetterRecognition = na.omit(LetterRecognition) #kill any observations with missingness
+skim(LetterRecognition)
+?LetterRecognition
+
+adult %<>% 
+  na.omit #kill any observations with missingness
+n_samp = 2000
+seed = 1984
+set.seed(seed)
+letters_samp = LetterRecognition %>% sample_n(n_samp)
+y = letters_samp$lettr
+X = letters_samp %>% select(-lettr)
+
+num_trees = 500
+mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
+#default mtry for classification models is floor(sqrt(p))
+mod_rf = YARF(X, y, num_trees = num_trees, seed = seed, bootstrap_indices = mod_bag$bootstrap_indices) 
+mod_bag$misclassification_error
+mod_rf$misclassification_error
+
+cat("gain: ", (mod_bag$misclassification_error - mod_rf$misclassification_error) / mod_bag$misclassification_error * 100, "%\n")
+```
+
+Very nice... and can likely be improved with optimizing mtry.
+
+There are very real gains for RF over bagging and these are most pronounced in classification models.
 
