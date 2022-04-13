@@ -2,6 +2,9 @@
 title: "Practice Lectures Week 10 MATH 342W Queens College"
 author: "Professor Adam Kapelner"
 date: "Apr 11, 2022"
+output:
+  word_document: default
+  pdf_document: default
 ---
 
 
@@ -1326,7 +1329,7 @@ n_samp = 2000
 #thus there is no need here to cast the ordinal variables cut, color, clarity to nominal variables
 diamonds_samp = diamonds %>% sample_n(n_samp)
 y = diamonds_samp$price
-X = diamonds_samp %>% select(-price)
+X = diamonds_samp %>% dplyr::select(-price)
 
 num_trees = 1000
 mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
@@ -1387,7 +1390,7 @@ seed = 1984
 set.seed(seed)
 adult_samp = adult %>% sample_n(n_samp)
 y = adult_samp$income
-X = adult_samp %>% select(-income)
+X = adult_samp %>% dplyr::select(-income)
 
 num_trees = 500
 mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
@@ -1408,7 +1411,7 @@ rm(list = ls())
 pacman::p_load(mlbench, skimr)
 data(LetterRecognition)
 LetterRecognition = na.omit(LetterRecognition) #kill any observations with missingness
-skim(LetterRecognition)
+#skim(LetterRecognition)
 ?LetterRecognition
 
 adult %<>% 
@@ -1418,7 +1421,7 @@ seed = 1984
 set.seed(seed)
 letters_samp = LetterRecognition %>% sample_n(n_samp)
 y = letters_samp$lettr
-X = letters_samp %>% select(-lettr)
+X = letters_samp %>% dplyr::select(-lettr)
 
 num_trees = 500
 mod_bag = YARFBAG(X, y, num_trees = num_trees, seed = seed)
