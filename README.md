@@ -6,6 +6,12 @@ This is the course homepage for Math 342W (and Masters level 650.4 and RM 742) a
 
 My lectures can be listened to as youtube tracks and lecture notes are also scanned in as PDF files contributed by students and myself.
 
+* Lecture 19 [(Notes 1)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec23kap.pdf) [Notes 2](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec24kap.pdf)
+* Lecture 18 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec22kap.pdf)
+* Lecture 17 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec20kap.pdf)
+* Lecture 16 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec19kap.pdf)
+* Lecture 15 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec16kap.pdf)
+* Lecture 14 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec14kap.pdf)
 * Lecture 13 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec13kap.pdf)
 * Lecture 12/13 [(Notes)](https://github.com/kapelner/QC_Math_342W_Spring_2021/blob/master/lectures/lec12kap.pdf)
 * Week 7 [Practice Notes in R](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/practice_lectures/week07.Rmd) 
