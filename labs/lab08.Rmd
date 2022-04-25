@@ -6,12 +6,16 @@ output: pdf_document
 
 # More Bagging Practice
 
-Write a function `random_bagged_ols` which takes as its arguments `X` and `y` with further arguments `num_ols_models` defaulted to 100 and `mtry` defaulted to NULL which then gets set within the function to be 50% of available features. This argument builds an OLS on a bootstrap sample of the data and uses only `mtry < p` of the available features. The function then returns all the `lm` models as a list with size `num_ols_models`.
+Write a function `random_bagged_ols` which takes as its arguments `X` and `y` with further arguments `num_ols_models` defaulted to 100 and `mtry` defaulted to NULL which then gets set within the function to be 50% of available features at random. This argument builds an OLS on a bootstrap sample of the data and uses only `mtry < p` of the available features. The function then returns all the `lm` models as a list with size `num_ols_models`.
 
 ```{r}
 #TO-DO
 
 ```
+
+For masters students: show that bagged ols does better than just ols out of sample. The diamonds data is likely a good data set to demo this on. You may have to add a few interactions.
+
+# More RF Practice
 
 Load up the Boston Housing Data and separate into `X` and `y`.
 
@@ -40,7 +44,7 @@ Ximps = list()
 t = 1
 repeat {
   for (j in 1 : p){
-    Ximps[[t]][, j] = randomForest(X = Ximps[[j - 1]] %>% select(-j), y = Ximps[[j - 1]][, j])
+    Ximps[[t]][, j] = 
   }
   t = t + 1
   #stop condition if Ximps[[t]] - Ximps[[t - 1]] is close together
@@ -365,13 +369,16 @@ For those of you who installed `YARF`, print out an image of the tree.
 #TO-DO
 ```
 
-Predict on the test set and compute a confusion matrix.
+Predict on the test set and report the misclassifcation error
 
 ```{r}
 #TO-DO
 ```
 
+###### Everything below here is due with lab 9
+
 Report the following error metrics: misclassifcation error, precision, recall, F1, FDR, FOR.
+and compute a confusion matrix.
 
 ```{r}
 #TO-DO

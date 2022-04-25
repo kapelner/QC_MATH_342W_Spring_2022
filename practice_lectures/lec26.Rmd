@@ -180,7 +180,7 @@ cat("optimal ridge advantage over OLS:", round((rmse_ols - rmse_optimal_ridge) /
 
 Of course you can use `mlr` as well but `glmnet` is probably more optimized.
 
-# Lasso
+# Lasso (and bonus: variable selection)
 
 Let's do this same problem using the lasso. There is no closed form solution since the design matrix is not orthogonal (i.e. there's some multicollinearity), so we will use the numerical optimization found in the `glmnet` package. While we're at it, we might as well use CV to find the best lambda.
 
