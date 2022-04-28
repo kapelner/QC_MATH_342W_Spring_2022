@@ -53,7 +53,7 @@ getDTthreads()
 We first instantiate the upgraded data.frame objects in both libraries:
 
 ```{r}
-diamonds_tbl = tbl_df(diamonds) #not necessary to cast because dplyr does the conversion automatically after using any dplyr function
+diamonds_tbl = as_tibble(diamonds) #not necessary to cast because dplyr does the conversion automatically after using any dplyr function
 diamonds_dt = data.table(diamonds) #absolutely necessary
 ```
 
@@ -478,7 +478,7 @@ microbenchmark(
   base_R = {diamonds_big$log_price = log(diamonds_big$price)},
   tidyverse = {diamonds_tbl_big %<>% mutate(log_price = log(price))},
   data.table = diamonds_dt_big[, log_price := log(price)],
-    times = 100
+    times = 10
 )
 ```
 

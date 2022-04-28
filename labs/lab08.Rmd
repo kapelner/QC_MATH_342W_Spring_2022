@@ -115,7 +115,14 @@ Order your dataset by maximum wind speed storm but within the rows of storm show
 Find the strongest storm by wind speed per year.
 
 ```{r}
-#TO-DO
+distinct(storms[, max_wind_by_year := max(wind), by = year][wind == max_wind_by_year, .(year, name, wind)])[, .(year, name)]
+
+storms %>%
+  group_by(year) %>%
+  filter(wind == max(wind)) %>%
+  select(year, name, wind) %>%
+  distinct %>%
+  select(year, name)
 ```
 
 For each named storm, find its maximum category, wind speed, pressure and diameters. Do not allow the max to be NA (unless all the measurements for that storm were NA).
