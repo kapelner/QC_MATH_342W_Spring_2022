@@ -262,7 +262,7 @@ Now we want to transition to building real design matrices for prediction. This 
 Suppose we wish to predict the following: given the first three readings of a storm, can you predict its maximum wind speed? Identify the `y` and identify which features you need $x_1, ... x_p$ and build that matrix with `dplyr` functions. This is not easy, but it is what it's all about. Feel free to "featurize" as creatively as you would like. You aren't going to overfit if you only build a few features relative to the total 198 storms.
 
 ```{r}
-#TO-DO
+
 ```
 
 Fit your model. Validate it. 
