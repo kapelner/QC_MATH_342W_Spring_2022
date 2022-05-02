@@ -1,0 +1,257 @@
+---
+title: "Lab 9"
+author: "Your Name Here"
+output: pdf_document
+---
+
+
+# Probability Estimation and Model Selection
+
+Load up the `adult` in the package `ucidata` dataset and remove missingness and the variable `fnlwgt`:
+
+```{r}
+pacman::p_load_gh("coatless/ucidata")
+data(adult)
+adult = na.omit(adult) #kill any observations with missingness
+adult$fnlwgt = NULL
+```
+
+Cast income to binary where 1 is the `>50K` level.
+
+```{r}
+adult$income = #TO-DO
+```
+
+
+We are going to do some dataset cleanup now. But in every cleanup job, there's always more to clean! So don't expect this cleanup to be perfect. 
+
+
+Firstly, a couple of small things. In variable `marital_status` collapse the levels `Married-AF-spouse` (armed force marriage) and `Married-civ-spouse` (civilian marriage) together into one level called `Married`. Then in variable `education` collapse the levels `1st-4th` and `Preschool` together into a level called `<=4th`.
+
+```{r}
+#TO-DO
+```
+
+Create a model matrix `Xmm` (for this prediction task on just the raw features) and show that it is *not* full rank (i.e. the result of `ncol` is greater than the result of `Matrix::rankMatrix`).
+
+```{r}
+#TO-DO
+```
+
+
+Now tabulate and sort the variable `native_country`.
+
+```{r}
+#TO-DO
+```
+
+Do you see rare levels in this variable? Explain why this may be a problem.
+
+#TO-DO
+
+Collapse all levels that have less than 50 observations into a new level called `other`. This is a very common data science trick that will make your life much easier. If you can't hope to model rare levels, just give up and do something practical! I would recommend first casting the variable to type "character" and then do the level reduction and then recasting back to type `factor`. Tabulate and sort the variable `native_country` to make sure you did it right.
+
+```{r}
+#TO-DO
+```
+
+We're still not done getting this data down to full rank. Take a look at the model matrix just for `workclass` and `occupation`. Is it full rank?
+
+
+```{r}
+#TO-DO
+```
+
+These variables are similar and they probably should be interacted anyway eventually. Let's combine them into one factor. Create a character variable named `worktype` that is the result of concatenating `occupation` and `workclass` togetther with a ":" in between. Use the `paste` function with the `sep` argument (this casts automatically to type `character`). Then tabulate its levels and sort. 
+
+```{r}
+#TO-DO
+```
+
+Like the `native_country` exercise, there are a lot of rare levels. Collapse levels with less than 100 observations to type `other` and then cast this variable `worktype` as type `factor`. Recheck the tabulation to ensure you did this correct.
+
+```{r}
+#TO-DO
+```
+
+
+To do at home: merge the two variables `relationship` and `marital_status` together in a similar way to what we did here.
+
+```{r}
+#TO-DO
+```
+
+We are finally ready to fit some probability estimation models for `income`! In lecture 16 we spoke about model selection using a cross-validation procedure. Let's build this up step by step. First, split the dataset into `Xtrain`, `ytrain`, `Xtest`, `ytest` using K=5.
+
+```{r}
+#TO-DO
+```
+
+Create the following four models on the training data in a `list` objected named `prob_est_mods`: logit, probit, cloglog and cauchit (which we didn't do in class but might as well). For the linear component within the link function, just use the vanilla raw features using the `formula` object `vanilla`. Each model's key in the list is its link function name + "-vanilla". One for loop should do the trick here.
+
+```{r}
+link_functions = c("logit", "probit", "cloglog", "cauchit")
+vanilla = income ~ .
+prob_est_mods = list()
+
+#TO-DO
+```
+
+Now let's get fancier. Let's do some variable transforms. Add `log_capital_loss` derived from `capital_loss` and `log_capital_gain` derived from `capital_gain`. Since there are zeroes here, use log_x = log(1 + x) instead of log_x = log(x). That's always a neat trick. Just add them directly to the data frame so they'll be picked up with the `.` inside of a formula.
+
+```{r}
+#TO-DO
+```
+
+Create a density plot that shows the age distribution by `income`.
+
+```{r}
+#TO-DO
+```
+
+What do you see? Is this expected using common sense?
+
+#TO-DO
+
+Now let's fit the same models with all link functions on a formula called `age_interactions` that uses interactions for `age` with all of the variables. Add all these models to the `prob_est_mods` list.
+
+```{r}
+age_interactions = class ~ #TO-DO
+
+#TO-DO
+```
+
+Create a function called `brier_score` that takes in a probability estimation model, a dataframe `X` and its responses `y` and then calculates the brier score.
+
+```{r}
+brier_score = function(prob_est_mod, X, y){
+  #TO-DO
+}
+```
+
+Now, calculate the in-sample Brier scores for all models. You can use the function `lapply` to iterate over the list and pass in in the function `brier_score`.
+
+```{r}
+lapply(prob_est_mods, #TO-DO)
+```
+
+Now, calculate the out-of-sample Brier scores for all models. You can use the function `lapply` to iterate over the list and pass in the function `brier_score`.
+
+```{r}
+lapply(prob_est_mods, #TO-DO)
+```
+
+Which model wins in sample and which wins out of sample? Do you expect these results? Explain.
+
+#TO-DO
+
+What is wrong with this model selection procedure? There are a few things wrong.
+
+#TO-DO
+
+Run all the models again. This time do three splits: subtrain, select and test. After selecting the best model, provide a true oos Brier score for the winning model.
+
+```{r}
+#TO-DO
+```
+
+
+
+
+
+
+
+# The Forward Stepwise Procedure for Probability Estimation Models
+
+This section is only for masters students.
+
+Set a seed and load the `adult` dataset and remove missingness and randomize the order.
+
+```{r}
+rm(list = ls())
+set.seed(1)
+pacman::p_load_gh("coatless/ucidata")
+data(adult)
+adult = na.omit(adult)
+adult = adult[sample(1 : nrow(adult)), ]
+```
+
+Copy from the previous lab all cleanups you did to this dataset.
+
+```{r}
+#TO-DO
+```
+
+
+We will be doing model selection. We will split the dataset into 3 distinct subsets. Set the size of our splits here. For simplicitiy, all three splits will be identically sized. We are making it small so the stepwise algorithm can compute quickly. If you have a faster machine, feel free to increase this.
+
+```{r}
+Nsplitsize = 1000
+```
+
+Now create the following variables: `Xtrain`, `ytrain`, `Xselect`, `yselect`, `Xtest`, `ytest` with `Nsplitsize` observations. Binarize the y values. 
+
+```{r}
+Xtrain = adult[1 : Nsplitsize, ]
+Xtrain$income = NULL
+ytrain = ifelse(adult[1 : Nsplitsize, "income"] == ">50K", 1, 0)
+Xselect = adult[(Nsplitsize + 1) : (2 * Nsplitsize), ]
+Xselect$income = NULL
+yselect = ifelse(adult[(Nsplitsize + 1) : (2 * Nsplitsize), "income"] ==">50K", 1, 0)
+Xtest = adult[(2 * Nsplitsize + 1) : (3 * Nsplitsize), ]
+Xtest$income = NULL
+ytest = ifelse(adult[(2 * Nsplitsize + 1) : (3 * Nsplitsize), "income"] == ">50K", 1, 0)
+```
+
+Fit a vanilla logistic regression on the training set.
+
+```{r}
+logistic_mod = glm(ytrain ~ ., Xtrain, family = "binomial")
+```
+
+and report the log scoring rule, the Brier scoring rule.
+
+```{r}
+#TO-DO
+```
+
+We will be doing model selection using a basis of linear features consisting of all first-order interactions of the 14 raw features (this will include square terms as squares are interactions with oneself). 
+
+Create a model matrix from the training data containing all these features. Make sure it has an intercept column too (the one vector is usually an important feature). Cast it as a data frame so we can use it more easily for modeling later on. We're going to need those model matrices (as data frames) for both the select and test sets. So make them here too (copy-paste). Make sure their dimensions are sensible.
+
+```{r}
+#TO-DO
+dim(Xmm_train)
+dim(Xmm_select)
+dim(Xmm_test)
+```
+
+Write code that will fit a model stepwise. You can refer to the chunk in the practice lecture. Use the negative Brier score to do the selection. The negative of the Brier score is always positive and lower means better making this metric kind of like s_e so the picture will be the same as the canonical U-shape for oos performance. 
+
+Run the code and hit "stop" when you begin to the see the Brier score degrade appreciably oos. Be patient as it will wobble.
+
+```{r}
+pacman::p_load(Matrix)
+p_plus_one = ncol(Xmm_train)
+predictor_by_iteration = c() #keep a growing list of predictors by iteration
+in_sample_brier_by_iteration = c() #keep a growing list of briers by iteration
+oos_brier_by_iteration = c() #keep a growing list of briers by iteration
+i = 1
+
+repeat {
+
+  #TO-DO 
+  #wrap glm and predict calls with use suppressWarnings() so the console is clean during run
+  
+  if (i > Nsplitsize || i > p_plus_one){
+    break
+  }
+}
+```
+
+Plot the in-sample and oos (select set) Brier score by $p$. Does this look like what's expected?
+
+```{r}
+#TO-DO
+```
+
