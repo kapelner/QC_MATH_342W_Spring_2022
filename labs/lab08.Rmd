@@ -399,7 +399,7 @@ options(java.parameters = "-Xmx5g")
 pacman::p_load(YARF)
 
 #YARF can't handle this large dataset so let's pare it down
-n_sub_train = 5000
+n_sub_train = 20000
 bills_data_train_sub = bills_data_train[sample(1 : .N, n_sub_train)]
 Xtrain = bills_data_train_sub[, -"paid_in_full"]
 ytrain = bills_data_train_sub[, paid_in_full]
