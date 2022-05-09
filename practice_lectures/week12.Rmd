@@ -771,6 +771,250 @@ All the threshold-derived classification models get better and you are guarantee
 There is also a way to make asymmetric models with trees. We may do this later if we have time.
 
 
+#Classification Trees and Confusion Tables
+
+Let's load up the adult dataset where the response is 1 if the person makes more than $50K per year and 0 if they make less than $50K per year.
+
+```{r}
+pacman::p_load_gh("coatless/ucidata")
+data(adult)
+adult %<>% 
+  na.omit #kill any observations with missingness
+```
+
+Let's use samples of 2,000 to run experiments:
+
+```{r}
+train_size = 2000
+train_indices = sample(1 : nrow(adult), train_size)
+adult_train = adult[train_indices, ]
+y_train = adult_train$income
+X_train = adult_train
+X_train$income = NULL
+test_indices = sample(setdiff(1 : nrow(adult), train_indices), train_size)
+adult_test = adult[test_indices, ]
+y_test = adult_test$income
+X_test = adult_test
+X_test$income = NULL
+```
+
+Make a tree:
+
+```{r}
+tree_mod = YARFCART(X_train, y_train)
+tree_mod
+```
+
+How "big" is this tree model?
+
+```{r}
+get_tree_num_nodes_leaves_max_depths(tree_mod)
+```
+
+What are the "main" splits?
+
+```{r}
+illustrate_trees(tree_mod, max_depth = 4, open_file = TRUE)
+```
+
+Compute in-sample and out of sample fits:
+
+```{r}
+y_hat_train = predict(tree_mod, X_train)
+y_hat_test = predict(tree_mod, X_test)
+```
+
+Let's look at the confusion table in-sample:
+
+```{r}
+table(y_train, y_hat_train)
+```
+
+There are no errors here! Thus, precision and recall are both 100%. This makes sense because classification trees overfit.
+
+Let's do the same oos:
+
+```{r}
+oos_conf_table = table(y_test, y_hat_test)
+oos_conf_table
+```
+
+We didn't do as well (of course). Let's calculate some performance metrics. We assume ">50k" is the "positive" category and "<=50k" is the "negative" category. Note that this choice is arbitrary and everything would just be switched if we did it the other way.
+
+```{r}
+n = sum(oos_conf_table)
+n
+fp = oos_conf_table[1, 2]
+fn = oos_conf_table[2, 1]
+tp = oos_conf_table[2, 2]
+tn = oos_conf_table[1, 1]
+num_pred_pos = sum(oos_conf_table[, 2])
+num_pred_neg = sum(oos_conf_table[, 1])
+num_pos = sum(oos_conf_table[2, ])
+num_neg = sum(oos_conf_table[1, ])
+acc = (tp + tn) / n
+acc
+misclassifcation_error = 1 - acc
+misclassifcation_error
+precision = tp / num_pred_pos
+precision
+recall = tp / num_pos
+recall
+false_discovery_rate = 1 - precision
+false_discovery_rate
+false_omission_rate = fn / num_pred_neg
+false_omission_rate
+```
+
+Let's see how this works on a dataset whose goal is classification for more than 2 levels. Note: this is only possible now with trees!
+
+```{r}
+rm(list = ls())
+pacman::p_load(mlbench, skimr)
+data(LetterRecognition)
+LetterRecognition = na.omit(LetterRecognition) #kill any observations with missingness
+skim(LetterRecognition)
+?LetterRecognition
+```
+
+Now we split the data:
+
+```{r}
+test_samp = 500
+train_indices = sample(1 : nrow(LetterRecognition), test_samp)
+ltr_train = LetterRecognition[train_indices, ]
+y_train = ltr_train$lettr
+X_train = ltr_train
+X_train$lettr = NULL
+test_indices = sample(setdiff(1 : nrow(LetterRecognition), train_indices), test_samp)
+ltr_test = LetterRecognition[test_indices, ]
+y_test = ltr_test$lettr
+X_test = ltr_test
+X_test$lettr = NULL
+```
+
+And fit a tree model and its in-sample and oos fits:
+
+```{r}
+tree_mod = YARFCART(X_train, y_train)
+y_hat_train = predict(tree_mod, X_train)
+y_hat_test = predict(tree_mod, X_test)
+```
+
+Take a look at the in-sample confusion matrix:
+
+```{r}
+table(y_train, y_hat_train)
+```
+
+Perfecto... as expected... 
+
+Now the oos confusion matrix:
+
+```{r}
+oos_confusion_table = table(y_test, y_hat_test)
+oos_confusion_table
+```
+
+Hard to read. Let's make it easier to read by blanking out the diagonal and looking at entried only >= 5:
+
+```{r}
+oos_confusion_table[oos_confusion_table < 2] = ""
+diag(oos_confusion_table) = "."
+oos_confusion_table
+mean(y_test != y_hat_test)
+```
+
+What's it using to determine letter?
+
+```{r}
+illustrate_trees(tree_mod, max_depth = 3, open_file = TRUE)
+```
+
+Where did these features comes from?? Deep learning helps to create the features from the raw pixel data. Wish I had a whole next semester to discuss this...
+
+Random Forests:
+
+```{r}
+num_trees = 500
+train_size = 2000
+
+training_indices = sample(1 : nrow(adult), train_size)
+adult_train = adult[training_indices, ]
+y_train = adult_train$income
+X_train = adult_train
+X_train$income = NULL
+
+mod_bag = YARFBAG(X_train, y_train, num_trees = num_trees, calculate_oob_error = FALSE)
+mod_rf = YARF(X_train, y_train, num_trees = num_trees, calculate_oob_error = FALSE)
+```
+
+And test:
+
+```{r}
+test_indices = sample(setdiff(1 : nrow(adult), training_indices), 25000)
+adult_test = adult[test_indices, ]
+y_test = adult_test$income
+X_test = adult_test
+X_test$income = NULL
+
+y_hat_test_bag = predict(mod_bag, X_test)
+y_hat_test_rf = predict(mod_rf, X_test)
+
+oos_conf_table_bag = table(y_test, y_hat_test_bag)
+oos_conf_table_rf = table(y_test, y_hat_test_rf)
+oos_conf_table_bag
+oos_conf_table_rf
+miscl_err_bag = mean(y_test != y_hat_test_bag)
+miscl_err_rf = mean(y_test != y_hat_test_rf)
+miscl_err_bag
+miscl_err_rf
+
+cat("gain: ", (miscl_err_bag - miscl_err_rf) / miscl_err_bag * 100, "%\n")
+```
+
+And on letters:
+
+```{r}
+test_samp = 2000
+train_indices = sample(1 : nrow(LetterRecognition), test_samp)
+ltr_train = LetterRecognition[train_indices, ]
+y_train = ltr_train$lettr
+X_train = ltr_train
+X_train$lettr = NULL
+test_indices = sample(setdiff(1 : nrow(LetterRecognition), train_indices), test_samp)
+ltr_test = LetterRecognition[test_indices, ]
+y_test = ltr_test$lettr
+X_test = ltr_test
+X_test$lettr = NULL
+```
+
+And fit a tree model and its in-sample and oos fits:
+
+```{r}
+mod_bag = YARFBAG(X_train, y_train, num_trees = num_trees, calculate_oob_error = FALSE)
+mod_rf = YARF(X_train, y_train, num_trees = num_trees, calculate_oob_error = FALSE)
+mod_bag
+mod_rf
+
+y_hat_test_bag = predict(mod_bag, X_test)
+y_hat_test_rf = predict(mod_rf, X_test)
+
+oos_conf_table_bag = table(y_test, y_hat_test_bag)
+oos_conf_table_rf = table(y_test, y_hat_test_rf)
+oos_conf_table_bag
+oos_conf_table_rf
+miscl_err_bag = mean(y_test != y_hat_test_bag)
+miscl_err_rf = mean(y_test != y_hat_test_rf)
+miscl_err_bag
+miscl_err_rf
+
+cat("gain: ", (miscl_err_bag - miscl_err_rf) / miscl_err_bag * 100, "%\n")
+```
+
+Very real gains for classification.
+
+
 
 # Missingness
 
@@ -872,68 +1116,3 @@ There is a clear gain to imputing and using is_missing dummy features to reduce 
 
 Note: this is just an illustration of best practice. It didn't necessarily have to "work".
 
-
-# Spurious Correlation
-
-Take a look at the following real data:
-
-```{r}
-rm(list = ls())
-pacman::p_load(tidyverse, magrittr, data.table)
-
-spurious = data.frame(
-  yearly_divorce_rate_maine_per_1000 = c(5,4.7,4.6,4.4,4.3,4.1,4.2,4.2,4.2,4.1),
-  yearly_US_consumption_margarine_per_capita = c(8.2,7,6.5,5.3,5.2,4,4.6,4.5,4.2,3.7)
-)
-
-with(spurious, 
-     cor(yearly_divorce_rate_maine_per_1000, yearly_US_consumption_margarine_per_capita))
-```
-
-And visually,
-
-```{r}
-ggplot(spurious, aes(x = yearly_divorce_rate_maine_per_1000, y = yearly_US_consumption_margarine_per_capita)) +
-  geom_point() + geom_smooth()
-```
-
-How did this happen? 
-
-I looked at many, many different datasets until I found something impressive!
-
-Well, we can imagine doing the same thing. Let's look at a million datasets and find the dataset most correlated with the yearly consumption of margarine per capita:
-
-
-```{r}
-y = spurious$yearly_US_consumption_margarine_per_capita
-n = length(y)
-
-n_sim = 1e6
-best_abs_corr = 0
-best_random_xs = NULL
-for (i in 1 : n_sim){
-  x = rnorm(n)
-  
-  random_abs_corr = abs(cor(x, y))
-  if (random_abs_corr > best_abs_corr){
-    best_abs_corr = random_abs_corr
-    best_random_xs = x
-  }
-}
-spurious$best_random_xs = best_random_xs
-
-best_abs_corr
-```
-
-And visually,
-
-```{r}
-ggplot(spurious, aes(x = best_random_xs, y = yearly_US_consumption_margarine_per_capita)) +
-  geom_point() + geom_smooth() + ggtitle(paste("Spurious Correlation has |r| = ", round(best_abs_corr, 3)))
-```
-
-So what's the narrative here? If you look through a gajillion random features that have no causal connection with the phenomenon $y$, you will eventually find something that "clicks". It's the same as the "chance capitalization" except taken to an extreme. Here are a whole bunch of them:
-
-https://www.tylervigen.com/spurious-correlations
-
-However, these will all vanish if you keep collecting data. Anything that is built upon falsehood will crumble!
