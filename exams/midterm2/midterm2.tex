@@ -1,0 +1,641 @@
+\documentclass[12pt]{article}
+
+\include{preamble}
+
+\title{Math 342W / 650.4 Spring \the\year \\ Midterm Examination Two}
+\author{Professor Adam Kapelner}
+
+\date{May 16, \the\year}
+\begin{document}
+\maketitle
+
+\noindent Full Name \line(1,0){410}
+
+\thispagestyle{empty}
+
+\section*{Code of Academic Integrity}
+
+\footnotesize
+Since the college is an academic community, its fundamental purpose is the pursuit of knowledge. Essential to the success of this educational mission is a commitment to the principles of academic integrity. Every member of the college community is responsible for upholding the highest standards of honesty at all times. Students, as members of the community, are also responsible for adhering to the principles and spirit of the following Code of Academic Integrity.
+
+Activities that have the effect or intention of interfering with education, pursuit of knowledge, or fair evaluation of a student's performance are prohibited. Examples of such activities include but are not limited to the following definitions:
+
+\paragraph{Cheating} Using or attempting to use unauthorized assistance, material, or study aids in examinations or other academic work or preventing, or attempting to prevent, another from using authorized assistance, material, or study aids. Example: using an unauthorized cheat sheet in a quiz or exam, altering a graded exam and resubmitting it for a better grade, etc.
+\\
+
+\noindent I acknowledge and agree to uphold this Code of Academic Integrity. \\
+
+\begin{center}
+\line(1,0){250} ~~~ \line(1,0){100}\\
+~~~~~~~~~~~~~~~~~~~~~signature~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ date
+\end{center}
+
+\normalsize
+\vspace{-0.5cm}
+\section*{Instructions}
+
+This exam is 110 minutes and closed-book. You are allowed \textbf{two} pages (front and back) of a \qu{cheat sheet.} You may use a graphing calculator of your choice. Please read the questions carefully. If the question reads \qu{compute,} this means the solution will be a number otherwise you can leave the answer in \textit{any} widely accepted mathematical notation which could be resolved to an exact or approximate number with the use of a computer. I advise you to skip problems marked \qu{[Extra Credit]} until you have finished the other questions on the exam, then loop back and plug in all the holes. I also advise you to use pencil. The exam score will be normed to be out of 100 points total plus extra credit if it exists. Partial credit will be granted for incomplete answers on most of the questions. \fbox{Box} in your final answers. Good luck!
+
+\pagebreak
+
+\problem In class, we spoke about probability estimation for a binary phenomenon $\mathcal{Y} = \braces{0,1}$. We modeled each observation as an independent $\bernoulli{\theta_i}$ i.e. $Y_i \inddist  \theta_i^{y_i} (1 - \theta_i)^{1-y_i}$ where $\theta_i := \expe{Y_i = 1~|~\x_i}$ which for the Bernoulli is synonymous with $\cprob{Y_i = 1}{\x_i}$ and it varies with observation based on the features $\x_i$ which is a row vector of length $p+1$ since the first entry is set to be one. 
+
+To do so, we used a generalized linear model (GLM) which coerced the linear model $\x \cdot \w$ into the support of the parameter $\theta_i$, a probability ranging from $\bracks{0,1}$. To do this coercion, we used a link function $\phi(\x \cdot \w)$ which mapped $\x \cdot \w \in \reals \rightarrow \support{\theta_i} = \bracks{0,1}$. Any monotonically increasing function with domain $\reals$ and range $\bracks{0,1}$ was legal. For example, any CDF of a random variable with support $\reals$ fits this definition. 
+
+Let's use the link function $\phi(u)$ is the CDF of the standard normal denoted $\Phi(u)$. This algorithm is called \qu{probit regression} and we'll denote it $\mathcal{A}_{\text{probit}}$.
+
+\benum
+\subquestionwithpoints{5} Write out the objective function to maximize which is the probability of the entire training set $\mathbb{D}$. Since this is a GLM, your answer must include the linear term for the $i$th observation, $\x_i \cdot \w$. \\
+
+$\cprob{Y_1, \ldots, Y_n}{\x_1, \ldots, \x_n} = \displaystyle\prod_{i=1}^n \cprob{Y_i}{\x_i} =\prod_{i=1}^n  $\\
+
+\subquestionwithpoints{2} Our algorithm $\mathcal{A}_{\text{probit}}$ involves running this optimization problem in the computer: $\b := \argmax_{\w} \braces{\text{your answer from the previous problem}}$. What is the dimension of the vector $\b$?
+
+\subquestionwithpoints{3} Given $\b$, for a new observation $\x_\star$, write the explicit functional form of $g(\x_\star)$, an expression that computes $\hat{p}_\star$, the estimate that $\cprob{Y_\star = 1}{\x_\star}$. \spc{1.5}
+
+
+\subquestionwithpoints{6} Assume the dataset now had $p=1$ and $\mathcal{A}_{\text{probit}}$ returned $b_0 = 1.77$ and $b_1 = 1.10$. Interpret the value $b_1 = 1.10$. This means you must write a few sentences in English below.\spc{8}
+
+
+Assume $p=1$ for the rest of the problem. Displayed below is $\mathbb{D}_{\text{test}}^\top$ with $n_{\text{test}} = 10$ including the probability estimates from $g$ denoted as the vector $\bv{\hat{p}}$ underneath $\mathbb{D}_{\text{test}}^\top$:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{r|rrrrrrrrrr}
+$\x_{\cdot 1}$ & -2.51 & 0.73 & -3.34 & 6.38 & 1.32 & -3.28 & 1.95 & 2.95 & 2.30 & -1.22 \\ 
+$\y$ & 1 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 1 & 0 \\ \hline
+$\bv{\hat{p}}$ & 0.08 & 0.68 & 0.03 & 0.99 & 0.79 & 0.04 & 0.88 & 0.95 & 0.91 & 0.23
+\end{tabular}
+\end{table}~\vspace{1.5cm}
+
+
+\subquestionwithpoints{5} Circle the letters of all the following that are \textbf{true}.
+
+
+\begin{enumerate}[(a)]
+\item You have enough information to compute the out-of-sample Brier scoring rule
+\item You have enough information to compute the out-of-sample log scoring rule
+\item You have enough information to compute the out-of-sample AUC metric
+\item The oos AUC is definiteively greater than 0.5 for this model
+\item You have enough information to compute an approximate out-of-sample DET
+\end{enumerate}
+
+
+\subquestionwithpoints{4} We now use this probit regression model to do binary classification. Using the naive threshold classifier, compute the average oos misclassification error. \spc{2}
+
+\subquestionwithpoints{3} If the cost of false positives was \$2 and the cost of false negatives was \$1, compute an estimate of mean cost per prediction to the nearest cent. \spc{2}
+
+\subquestionwithpoints{4} If the cost of false negatives was much much greater than the cost of false positives, what explicit thresholding rule would minimize mean cost per prediction? Hint: there are many correct answers. \spc{3}
+
+\eenum
+
+
+\problem In class, we never spoke about count modeling i.e. $\mathcal{Y} = \braces{0,1, 2, \ldots}$ but it is very similar to our discussion of probability estimation. We will now model each observation as an independent $\poisson{\theta_i}$ i.e. $Y_i \inddist \theta_i^{y_i} e^{-\theta_i} / y_i!$ where $\theta_i$ is the $\expe{Y_i = 1~|~\x_i}$ and it varies with observation based on the features $\x_i$ which is a row vector of length $p+1$ since the first entry is set to be one. 
+
+To do so, we will use a generalized linear model (GLM) which coerces the linear model $\x \cdot \w$ into the support of the parameter $\theta_i$, a mean count ranging in $\parens{0, \infty}$. To do this coercion, we can use a link function $\phi(\x \cdot \w)$ which maps $\x \cdot \w \in \reals \rightarrow \support{\theta_i} = \parens{0, \infty}$. Any monotonically increasing function with domain $\reals$ and range $\parens{0, \infty}$ is legal.
+
+Let's use the link function $\phi(u) = 10^u$. This algorithm is called \qu{poisson regression} and we'll denote it $\mathcal{A}_{\text{poisson}}$.
+
+\benum
+\subquestionwithpoints{6} Write out the objective function to maximize which is the probability of the entire training set $\mathbb{D}$. Since this is a GLM, your answer must include the linear term for the $i$th observation, $\x_i \cdot \w$. \\
+
+$\cprob{Y_1, \ldots, Y_n}{\x_1, \ldots, \x_n} = \displaystyle\prod_{i=1}^n \cprob{Y_i}{\x_i} = \prod_{i=1}^n $\\
+
+\subquestionwithpoints{1} Our algorithm $\mathcal{A}_{\text{poisson}}$ involves running this optimization problem in the computer: $\b := \argmax_{\w} \braces{\text{your answer from the previous problem}}$. What is the dimension of the vector $\b$?
+
+\subquestionwithpoints{4} For the $n_{\text{test}}$ oos responses denoted by the vector $\y$ and oos predictions denoted by the vector $\yhat$, propose a sensical error metric that gauges the oos performance of the model returned by $\mathcal{A}_{\text{poisson}}$. There are many acceptable answers.\spc{3}
+
+\subquestionwithpoints{4} Assume the dataset now had $p=1$ and $\mathcal{A}_{\text{poisson}}$ returned $b_0 = 1.77$ and $b_1 = 1.10$. For $x_\star = 1$, compute $\hat{y}_\star$.\spc{3}
+
+\eenum
+
+
+\problem In the lab we analyzed three tables: bills, bill payments, bill discounts which have 226,434 rows, 194,850 rows and 60 rows respectively. Here are the first six rows of the bills table followed by the first 6 rows of the bill payments table and the first 6 rows of the bill discounts table:
+
+\begin{verbatim}
+         id   due_date invoice_date tot_amount customer_id discount_id
+1: 15163811 2017-02-12   2017-01-13   99490.77    14290629     7302585
+2: 17244832 2016-03-22   2016-02-21   99475.73    14663516     7197225
+3: 16072776 2016-08-31   2016-07-17   99477.03    14569622     7302585
+4: 15446684 2017-05-29   2017-05-29   99478.60    14488427     7197225
+5: 16257142 2017-06-09   2017-05-10   99678.17    14497172     7197225
+6: 17244880 2017-01-24   2017-01-24   99475.04    14663516     7197225
+
+         id paid_amount transaction_date  bill_id
+1: 15272980    99165.60       2017-01-16 16571185
+2: 15246935    99148.12       2017-01-03 16660000
+3: 16596393    99158.06       2017-06-19 16985407
+4: 16596651    99175.03       2017-06-19 17062491
+5: 16687702    99148.20       2017-02-15 17184583
+6: 16593510    99153.94       2017-06-11 16686215
+
+        id num_days pct_off days_until_discount
+1: 5000000       20      NA                  NA
+2: 5693147       NA       2                  NA
+3: 6098612       20      NA                  NA
+4: 6386294      120      NA                  NA
+5: 6609438       NA       1                   7
+6: 6791759       31       1                  NA
+\end{verbatim}
+
+\benum
+\subquestionwithpoints{2} If we were to do a left join where the left table was bill discounts and the right table was bills, what would be the maximum number of rows in the final joined table? \spc{1}
+%\subquestionwithpoints{4} If we were to do a left join where the left table was bill discounts and the right table was bills, what would be the minimum number of rows in the final joined table? \spc{1}
+\subquestionwithpoints{2} If we were to do a full join where the left table was bill discounts and the right table was bills, what would be the maximum number of rows in the final joined table? \spc{3}
+
+This page was intentially left blank
+\pagebreak
+
+
+
+\subquestionwithpoints{6} Draw below a long version of the first six rows of the bill discounts table where the metric variables are the columns \texttt{num\_days}, \texttt{pct\_off}, \texttt{days\_until\_discount} and the id column is still the id column. Make sure the long table you display does not have any missingness. Use the listwise deletion procedure to address any missingness if it exists. \spc{9}
+
+
+After merging the three tables appropriately, we generated a feature \texttt{paid\_in\_full} $\in \mathcal{Y} = \braces{0,1}$ which will be our prediction target where 1 = the customer indeed paid on time. We also generate reasonable features and drop other columns that have no relevance to our prediction problem. Below is the first 6 rows of the final data frame. The first column is $y$ followed by $p=8$ features.
+
+
+\begin{verbatim}
+   paid_in_full tot_amount num_days_to_pay disc_days discount_pct_off
+1:            0   99505.86               1        13                2
+2:            1   99576.09              30         4               NA
+3:            0   99475.42              30         2               NA
+4:            0   99479.24               1        13                2
+5:            0   99475.05              30        13                2
+6:            0   99475.05              30         4               NA
+   disc_delay num_previous_bills num_prev_bills_yes owed_per_day
+1:         NA                107                  0    99505.857
+2:         NA               4859                922     3319.203
+3:         60               1046                  0     3315.847
+4:         NA               1023                  0    99479.237
+5:         NA                800                  0     3315.835
+6:         NA               1595                860     3315.83
+\end{verbatim}
+
+We then assume the missingness is this data frame is imputed using the missForest algorithm. Assume the final data frame does not have any missingness whatsover.
+
+We then sample 2,000 observations from that final imputed data frame to fit two models of all features on \texttt{paid\_in\_full}:
+
+\begin{enumerate}
+\item[($\mathcal{A} =$ RF)] A random forest classification model with 500 trees, 4 variables tried at each split and nodesize = 400. Here are the OOB results:
+
+\begin{verbatim}
+           predicted 0 predicted 1 model errors
+actual 0          1568         170        0.098
+actual 1            60         202        0.229
+use errors       0.037       0.457        0.115
+  Accuracy: 88.5%
+\end{verbatim}
+
+\item[($\mathcal{A} =$ CART)] A classification tree model with nodesize = 1. Here are the OOB results:
+
+\begin{verbatim} 
+           predicted 0 predicted 1 model errors
+actual 0           614          19        0.030
+actual 1            16          83        0.162
+use errors       0.025       0.186        0.048
+  Accuracy: 95.219%
+\end{verbatim}
+\end{enumerate}
+
+
+\subquestionwithpoints{13} Circle the letters of all the following that are \textbf{true}.
+
+
+\begin{enumerate}[(a)]
+\item The nodesize is a hyperparameter of $\mathcal{A} =$ RF
+\item The nodesize is a hyperparameter of $\mathcal{A} =$ CART
+\item The number of trees is a hyperparameter of $\mathcal{A} =$ RF
+\item The number of trees is a hyperparameter of $\mathcal{A} =$ CART
+\item The number of variables tried at each split is a hyperparameter of $\mathcal{A} =$ RF
+\item The number of variables tried at each split is a hyperparameter of $\mathcal{A} =$ CART
+\item $\mathcal{A} =$ CART cannot overfit since $p=8$ while $n=2,000$
+\item In this example, the CART model is estimated to do better than the RF model when predicting in the future if $c_{FP} = c_{FN}$\\
+
+For the remainder of this true/false set of questions, assume the terms \qu{MSE}, \qu{bias} and \qu{variance} are the terms employed in the bias-variance tradeoff theorem we discussed in class. We will assume that this theorem extends to situations where $\mathcal{Y} = \braces{0,1}$ even though it was proven for $\mathcal{Y} \subseteq \reals$.
+
+\item If the RF model was fit on more than 2,000 observations, it would have had less bias.
+\item If the CART model was fit on more than 2,000 observations, it would have had less bias.
+\item The RF model has less variance than the CART model
+
+\item If the RF model was fit with nodesize = 1, it would have had less bias than the CART model
+\item If the RF model was fit with nodesize = 1, it would have had less variance than the CART model
+\end{enumerate}
+
+Below is an illustration of tree \#1 in the RF model (fit with 500 trees, 4 variables tried at each split and nodesize = 400). The leaf value of \qu{2.00} means that $\hat{y} = 1$ for that leaf. The left direction mean the inequality in the split rule was true.
+
+\vspace{-0.5cm}
+\begin{figure}[htp]
+\centering
+\includegraphics[width=7in]{tree.png}
+\end{figure}
+\vspace{-0.5cm}
+
+
+
+\subquestionwithpoints{9} Circle the letters of all the following that are \textbf{true}.
+
+
+
+\begin{enumerate}[(a)]
+\item If RF model was fit with nodesize $< 400$, the tree would likely have more nodes and be deeper
+\item This tree was fit seeing approximately 2/3 of the training data's observations supplied to the algorithm
+\item This tree was fit seeing approximately 2/3 $\times 2000 = 1333$ observations
+\item This tree was fit with seeing half of the columns of the training data supplied to the algorithm
+\item The RF model would predict this bill to be paid back if \texttt{num\_previous\_bills} $> 2761.5$ 
+\item In this displayed tree, if \texttt{num\_previous\_bills} = 1000 and \texttt{tot\_amount} = 50,000, then we are unsure what $\hat{y}$ for this tree would be.
+\item In this displayed tree, if \texttt{tot\_amount} = 150,000, then we are unsure what $\hat{y}$ for this tree would be.
+\item The \texttt{num\_previous\_bills} feature is definitely the most important feature in the RF model.
+\item The \texttt{num\_previous\_bills} feature is definitely the most important feature in the CART model.
+\end{enumerate}
+
+\eenum
+
+
+\problem Your training data $\mathbb{D}$ consists of a survey among births of mice in a laboratory where many features are recorded: weight, body length, hair length, gender. Mice are known to be born with equal chance of male and female. Among a sample of 50 mice, 25 were recorded male, 16 were recorded female and 9 gender values are missing.
+
+\benum
+
+\subquestionwithpoints{2} Regardless of any previous knowledge of biology, what would be the naive imputed values for the 9 missing gender values? \spc{0.5}
+
+\subquestionwithpoints{3} Of the three missing data mechanisms we studied which one is \emph{least} likely to be the mechanism that creates the missingness in the mice gender values?\spc{0.5}
+
+
+\subquestionwithpoints{4} Consider the missingness mechanism to be one of the remaining two mechanisms. In order for missForest to be able to accurately impute the missing mice's gender, what would this dataset need to exhibit? Write a few sentences below. \spc{5}
+
+\eenum
+
+
+\problem You seek to create a better model to predict the $y :=$ ln(wind speed) of storms using ten continuous non-dummy linearly independent features of each storm $x_1, x_2, \ldots, x_{10}$. Consider the OLS algorithm on the following hypothesis sets consisting of linear models where the terms are described below:
+
+\begin{changemargin}{-0.7cm}{0.5cm}
+\small
+\beqn
+\mathcal{H}_0 &:=& \braces{w_0\,:\,w_0 \in \reals} \\
+\mathcal{H}_1 &:=& \mathcal{H}_0 \cup \braces{\text{all linear terms $w_j$ for all $x_j\,:\,w_j \in \reals$ for all $j$}} \\
+\mathcal{H}_{2a} &:=& \mathcal{H}_1 \cup \braces{\text{all linear terms $w_j$ for all $x_j \times x_k$ where $j \neq k\,:\,w_j \in \reals$ for all $j$}} \\
+\mathcal{H}_{2b} &:=& \mathcal{H}_{2a} \cup \braces{\text{all linear terms $w_j$ for all $x_j^2\,:\,w_j \in \reals$ for all $j$}}\\
+\mathcal{H}_{3a} &:=& \mathcal{H}_{2a} \cup \braces{\text{all linear terms $w_j$ for all $x_j \times x_k \times x_\ell$ where $j \neq k, k \neq \ell, j \neq \ell\,:\,w_j \in \reals$ for all $j$}}\\
+\mathcal{H}_{3b} &:=& \mathcal{H}_{2b} \cup \mathcal{H}_{2a} \cup \braces{\text{all linear terms $w_j$ for all $x_j^2 \times x_k$ where $j \neq k$ and all $x_j^3\,:\,w_j \in \reals$ for all $j$}}
+\eeqn
+\end{changemargin}
+\normalsize
+
+\noindent Let $g_m$ denote the model that is produced by OLS when $\mathcal{H}_m$ is employed e.g. $g_1 = b_0 + b_1 x_1 + \ldots + b_{10} x_{10}$ is the standard OLS model since it uses the $x_j$ terms from $\mathcal{H}_1$ and the intercept from $\mathcal{H}_0$.
+
+\benum
+
+\subquestionwithpoints{3} What is the most likely reason the response was defined as the log of the measured metric wind speed? \spc{1}
+
+\subquestionwithpoints{3} What is the number of terms in the mathematical model $g_{2a}$? \spc{0.5}
+
+\subquestionwithpoints{2} If you were to employ $\mathcal{H}_{3b}$ instead of $\mathcal{H}_{3a}$, which of the three types of modeling error can potentially decrease? \spc{0.5}
+
+\subquestionwithpoints{2} If you were to employ $\mathcal{H}_{3b}$ instead of $\mathcal{H}_{3a}$, which of the three types of modeling error can potentially increase? \spc{0.5}
+
+\subquestionwithpoints{4} If you knew some of your future predictions would be extrapolations, which would you be more comfortable employing: $\mathcal{H}_{3b}$ or $\mathcal{H}_{3a}$ and why? Write a couple of sentences below. \spc{4}
+
+\subquestionwithpoints{9} Let SSE$_m$ denote the SSE for $g_m$, let SSR$_m$ denote the SSR for $g_m$, let MSE$_m$ denote the MSE for $g_m$, let RMSE$_m$ denote the RMSE for $g_m$, let $R^2_m$ denote the $R^2$ for $g_m$. Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+%\item SSE$_0$ $<$ SSE$_{1}$ $<$ SSE$_{2a}$ $<$ SSE$_{2b}$ $<$ SSE$_{3a}$ $<$ SSE$_{3b}$
+%\item MSE$_0$ $<$ MSE$_{1}$ $<$ MSE$_{2a}$ $<$ MSE$_{2b}$ $<$ MSE$_{3a}$ $<$ MSE$_{3b}$
+\item RMSE$_0$ $<$ RMSE$_{1}$ $<$ RMSE$_{2a}$ $<$ RMSE$_{2b}$ $<$ RMSE$_{3a}$ $<$ RMSE$_{3b}$
+\item RMSE$_0$ $<$ RMSE$_{1}$ $<$ RMSE$_{2b}$ $<$ RMSE$_{2a}$ $<$ RMSE$_{3b}$ $<$ RMSE$_{3a}$
+\item $R^2_0$ $<$ $R^2_{1}$ $<$ $R^2_{2a}$ $<$ $R^2_{2b}$ $<$ $R^2_{3a}$ $<$ $R^2_{3b}$
+\item $R^2_0$ $<$ $R^2_{1}$ $<$ $R^2_{2b}$ $<$ $R^2_{2a}$ $<$ $R^2_{3b}$ $<$ $R^2_{3a}$
+\item SST = SSE$_0$ $+$ SSE$_{1}$ $+$ SSE$_{2b}$ $+$ SSE$_{2a}$ $+$ SSE$_{3b}$ $+$ SSE$_{3a}$ +\\  \inwhite{.}~~~~~~~~SSR$_0$ $+$ SSR$_{1}$ $+$ SSR$_{2b}$ $+$ SSR$_{2a}$ $+$ SSR$_{3b}$ $+$ SSR$_{3a}$
+\item $g_0(\x_\star)$ $<$ $g_{1}(\x_\star)$ $<$ $g_{2b}(\x_\star)$ $<$ $g_{2a}(\x_\star)$ $<$ $g_{3a}(\x_\star)$ $<$ $g_{3b}(\x_\star)$ for all $\x_\star \in \mathcal{X}$
+\end{enumerate}
+
+\subquestionwithpoints{3} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item If ridge regression with a cross-validated $\lambda$ was employed for linear models under $\mathcal{H}_{3b}$ it is likely many of the $b_j$ values would be set to exactly zero.
+\item If the lasso with a cross-validated $\lambda$ was employed for linear models under $\mathcal{H}_{3b}$ it is likely many of the $b_j$ values would be set to exactly zero.
+\item The out-of-sample (oos) RMSE$_{3b}$ under OLS is likely larger than the out-of-sample RMSE$_{3b}$ if ridge regression was employed for linear models under $\mathcal{H}_{3b}$
+\end{enumerate}
+
+For the remainder of the problem, we employ $\mathcal{H}_{3b}$ and $\mathcal{A} = $ OLS. Let $p+1$ refer to the total number of columns in the design matrix under $\mathcal{H}_{3b}$ and $\mathcal{A} = $ OLS.\\
+
+Let $\mathbb{D} = \mathbb{D}_{\text{train}} \cup \mathbb{D}_{\text{select}}$ and run stepwise regression by training each iterated model on $\mathbb{D}_{\text{train}}$ and gauging oos performance on $\mathbb{D}_{\text{select}}$ where $K=5$. Let $g_\text{step}$ denote the model produced by this procedure and let $p_\text{step}$ denote the number of linear terms in $g_\text{step}$.
+
+
+\subquestionwithpoints{5} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item There are no observations that are both $\in \mathbb{D}_{\text{train}}$ and $\in \mathbb{D}_{\text{select}}$
+\item There are exactly 20\% of the $n$ observations in $\mathbb{D}_{\text{select}}$ if $n$ is divisible by 5
+\item It is likely that $p_\text{step} < p+1$
+\item If you randomize the order of $\mathbb{D}$, split it into a different $\mathbb{D}_{\text{train}} \cup \mathbb{D}_{\text{select}}$, then run the stepwise algorithm, it will definitely return the same model as when you ran it the first time
+\item Using the residuals from $g_\text{step}$'s predictions on $\mathbb{D}_{\text{select}}$ will give an honest estimate of $g_\text{step}$'s future performance
+\end{enumerate}
+
+We now use the nested cross-validation resampling procedure from class. Let $\mathbb{D} = \mathbb{D}_{\text{train}} \cup \mathbb{D}_{\text{select}} \cup \mathbb{D}_{\text{test}}$ and run stepwise regression by training each iterated model on $\mathbb{D}_{\text{train}}$ and gauging oos performance on $\mathbb{D}_{\text{select}}$ where $K_{\text{inner}}=5$. This represents the number of folds among $\mathbb{D}_{\text{train}} \cup \mathbb{D}_{\text{select}}$. We then cross validate this cross validation with $K_{\text{outer}}=4$. Let $g_{\text{final}}$ denote the final model from this procedure.
+
+
+\subquestionwithpoints{7} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item There are exactly 20\% of the $n$ observations in $\mathbb{D}_{\text{select}}$ if $n$ is divisible by 5
+\item There are exactly 25\% of the $n$ observations in $\mathbb{D}_{\text{test}}$ if $n$ is divisible by 4
+\item If you randomize the order of $\mathbb{D}$, split it into a different $\mathbb{D}_{\text{train}} \cup \mathbb{D}_{\text{select}} \cup \mathbb{D}_{\text{test}}$, then run the stepwise algorithm, it will definitely return the same model $g_{\text{final}}$ as when you ran it the first time
+\item This method results in 4 potentially different $g_\text{step}$ models
+\item This method results in 5 potentially different $g_\text{step}$ models
+\item This method results in 20 potentially different $g_\text{step}$ models
+\item $g_{\text{final}}$ is the best of the many $g_\text{step}$ models produced in this procedure
+\end{enumerate}
+
+\eenum
+
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\problem This question is about science and modeling in general.
+
+\benum
+\subquestionwithpoints{4} When an object free falls to the ground from height $h$, an elementary physics provides textbook provides the formula for the predicted time $t$ the object takes to reach the ground as $t = \sqrt{2h/g}$ where $g$ is a constant. Explain why this formula is \qu{wrong but useful}.\spc{4}
+
+\subquestionwithpoints{9} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item A \qu{phenomenon} is anything one finds interesting in the world
+\item The enterprise of the scientific endeavor is essentially modeling
+\item The two goals of modeling is to provide predictions of the phenomenon in future settings and explanation of how the settings affect the phenomenon 
+\item Two different people can come to two different predictions for the same observation using a non-mathematical model
+\item Given one mathematical model $g$, there can be two different $y$ values for equal $\x$ input vectors
+\item Given one mathematical model $g$, there can be two different $\hat{y}$ values for equal $\x$ input vectors
+\item The naive model $g_0$ requires historical data
+\item The naive model $g_0$ can be used for prediction
+\item The naive model $g_0$ cannot be validated since it does not make use of the $\x_{i\cdot}$'s
+
+\end{enumerate}
+
+\subquestionwithpoints{6} Circle the letters of all the following that are \textbf{true}. In the quote by George Box and Norman Draper in 1987, \qu{All models are wrong but some are useful} means that models ...
+
+
+\begin{enumerate}[(a)]
+\item ... must have univariate response
+\item ... must be constructed using supervised learning
+\item ... sometimes provide accuracy that meets your prediction goals
+\item ... never can achieve perfect predictive accuracy
+\item ... need perfectly accurate input measurements
+\item ... never describe the pheonomenon absolutely
+\end{enumerate}
+
+\eenum
+
+
+\problem Consider the diamonds dataset which is part of the \texttt{ggplot2} package in \texttt{R}. This is a dataset we will be looking at extensively later in the course.
+
+\begin{lstlisting}
+> D = ggplot2::diamonds
+> dim(D)
+[1] 53940    10
+> summary(D)
+     carat               cut        color        clarity     
+ Min.   :0.2000   Fair     : 1610   D: 6775   SI1    :13065  
+ 1st Qu.:0.4000   Good     : 4906   E: 9797   VS2    :12258  
+ Median :0.7000   Very Good:12082   F: 9542   SI2    : 9194  
+ Mean   :0.7979   Premium  :13791   G:11292   VS1    : 8171  
+ 3rd Qu.:1.0400   Ideal    :21551   H: 8304   VVS2   : 5066  
+ Max.   :5.0100                     I: 5422   VVS1   : 3655  
+                                    J: 2808   (Other): 2531  
+     depth           table           price             x         
+ Min.   :43   Min.   :43   Min.   :  326   Min.   : 00  
+ 1st Qu.:61   1st Qu.:56   1st Qu.:  950   1st Qu.: 4.710  
+ Median :61.80   Median :57   Median : 2401   Median : 5.700  
+ Mean   :61.75   Mean   :57.46   Mean   : 3933   Mean   : 5.731  
+ 3rd Qu.:62.50   3rd Qu.:59   3rd Qu.: 5324   3rd Qu.: 6.540  
+ Max.   :79   Max.   :95   Max.   :18823   Max.   :10.740  
+                                                                 
+       y                z         
+ Min.   : 00   Min.   : 00  
+ 1st Qu.: 4.720   1st Qu.: 2.910  
+ Median : 5.710   Median : 3.530  
+ Mean   : 5.735   Mean   : 3.539  
+ 3rd Qu.: 6.540   3rd Qu.: 4.040  
+ Max.   :58.900   Max.   :31.800
+\end{lstlisting}
+
+\benum
+
+\subquestionwithpoints{1} Using the terminology used in class, what data type is \texttt{carat}? \spc{1}
+
+\subquestionwithpoints{1} Using the terminology used in class, what data type is \texttt{cut}? \spc{1}
+
+\subquestionwithpoints{1} Using the terminology used in class, what data type is \texttt{color}? \spc{1}
+
+If we were to model the response \texttt{price} using the OLS algorithm ...
+
+\subquestionwithpoints{2} ... then $g_0 = $ \spc{-0.5}
+
+\subquestionwithpoints{1} ... with all other columns as regressors, what is the value of $n$?  \spc{1}
+
+\subquestionwithpoints{2} ...  with only \texttt{color} as the sole regressor where its levels are dummified, what is the value of $p$? \spc{1}
+
+\subquestionwithpoints{2} ...  with only \texttt{color} as the sole regressor where its levels are dummified, which of the three types of modeling errors is most likely largest? \spc{1}
+
+\subquestionwithpoints{2} ...  with only \texttt{color} as the sole regressor where its levels are dummified, which of the three types of modeling errors is most likely smallest? \spc{1}
+
+\subquestionwithpoints{2} ... with only \texttt{color} as the sole regressor where its levels are dummified, explain in English how you can calculate $\hat{y}$ if $x = G$. \spc{3}
+
+\subquestionwithpoints{4} ... with all other columns as regressors, what is the value of $p$? Hint: there may be multiple acceptable answers.  \spc{1}
+
+If we were to model the response \texttt{clarity} ...
+
+\subquestionwithpoints{1} ... then the model would be a \line(1,0){100} ~model. \spc{-0.5}
+
+\subquestionwithpoints{2} ... then $g_0 = $ \spc{-0.5}
+
+\subquestionwithpoints{1} ... then would the OLS algorithm be suitable? \\ Circle one: Yes / no \spc{-0.5}
+
+\subquestionwithpoints{1} ... then would the perceptron algorithm be suitable? \\Circle one: Yes / no \spc{-0.5}
+
+
+\subquestionwithpoints{3} ... using the KNN algorithm on price $x$, provide a legal distance function below for a new input $x_*$.  \spc{2}
+
+If we were to model a response \texttt{cut\_is\_ideal} defined as $y_i :=\indic{\texttt{cut$_i$ = Ideal}}$ ...
+
+\subquestionwithpoints{2} ... then $g_0 = $ \spc{-0.5}
+
+The remaining questions require Figure 1, a scatterplot of $y = $ \texttt{cut\_is\_ideal} on $x_1$ = \texttt{table} and $x_2$ = \texttt{depth}.
+
+%	pacman::p_load(ggplot2, utf8)
+%	
+%	D = ggplot2::diamonds
+%	dim(D)
+%	summary(D)
+%	
+%	D$cut_is_ideal = as.factor(as.numeric(D$cut == "Ideal"))
+%	ggplot(D) + 
+%	  geom_point(aes(x = table, y = depth, col = cut_is_ideal, shape = cut_is_ideal)) +
+%	  xlim(50, 70) + ylim(50, 75) +
+%	  scale_shape_manual(values=c(4, 16))
+
+\subquestionwithpoints{7} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item This dataset is linearly separable
+\item  There is an association between $y = $ \texttt{cut\_is\_ideal} and $x_1$ = \texttt{table}
+\item There is an association between $y = $ \texttt{cut\_is\_ideal} and $x_2$ = \texttt{depth}
+\item There is a large $r_{x_1, x_2}$ i.e. near -1 or +1
+\item Using $\mathcal{A} = $ perceptron to model $y$ with maximum iterations 1,000,000 will return a valid $g$ in exactly 1,000,000 iterations
+\item KNN with the default $K = \sqrt{n}$ will most likely outperform both the perceptron and SVM regardless of the $\lambda$ hyperparmeter setting in the Vapnik function
+\item There is likely a model $g$ learned from this dataset that can attain zero errors oos
+\end{enumerate}
+
+\subquestionwithpoints{1} Using the KNN algorithm to model $y$ based on these two inputs and we use the default $K = \sqrt{n}$, then it seems most likely that the prediction for  \texttt{table} = 65 and \texttt{depth} = 65 is ... \spc{0}
+
+\subquestionwithpoints{1} Using the KNN algorithm to model $y$ based on these two inputs and we use the default $K = \sqrt{n}$, then it seems most likely that the prediction for  \texttt{table} = 55 and \texttt{depth} = 63 is ... \spc{0}
+
+\subquestionwithpoints{2} If we were to use the SVM with $\mathcal{H} = \braces{\indic{\w \cdot \x + b\geq 0}~ :~ \w \in \reals^2, b \in \reals}$ with a reasonable value of $\lambda$, then of the three types of modeling errors, the type most pronounced will likely be ... \spc{1}
+
+
+\eenum
+
+
+\problem Let $\X = \bracks{\onevec_n~|~\x_1~|~\ldots~|~\x_p} \in \reals^{n \times (p +1)}$  a non-orthogonal matrix whose entries after the first column are iid standard random normals, $\rank{\X} = p + 1 < n$,  $\y \in \reals^n$ whose average is $\ybar$ and sample variance is $s^2_y$. The modeling task is to model the response using the $n$ observations. Let $\b$ be the coefficients for the $p+1$ features, generated via the following $\mathcal{A}$,
+
+\beqn
+\b = \displaystyle\argmin_{\w \in \reals^{p + 1}}\braces{(\y - \X\w)^\top (\y - \X\w)},
+\eeqn
+
+
+\noindent let $\bbeta$ be the slope coefficients in the model that optimally fits $f(\x)$, $\H$ be the orthogonal projection matrix onto the $\colsp{\X}$, $\Q$ be the result of running Gram-Schmidt algorithm on $\X$, $\X = \Q\R$, $\yhat$ is the vector of predictions for the $n$ observations, $\e$ are the residuals where at least one $e_i \neq 0$, $\X_\perp$ denotes matrix whose columns form the span for $\reals^n$ that are not included in the columns of $\X$ and $\H_\perp$ be the orthogonal projection matrix onto the $\colsp{\X_\perp}$.
+
+\benum
+
+\subquestionwithpoints{26} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item This algorithm is OLS
+\item $\b = \displaystyle\argmin_{\w \in \reals^{p + 1}}\braces{ \sum_{i=1}^n  (y_i - \x_{i \cdot} \w)^2}$.
+
+\item SSR $<$ SST
+
+
+\item As $p$ increases, the dimension of $\H$ increases
+\item As $p$ increases, the rank of $\H$ increases
+\item $\rank{\H} = n$ if $\X\b= \y$
+
+
+\item $\H \y = \y$
+\item $\H \yhat = \yhat$
+
+\item $\H_\perp \y = \y$
+\item $\H_\perp \y = \e$
+\item $\H_\perp \e = \e$
+
+\item $[\X~\vdots~\X_\perp] = \I_n$
+\item $\H + \H_\perp = \I_{p+1}$
+\item $\H + \H_\perp = \I_n$
+
+\item $\y \cdot \e$ = 0
+\item $\b \cdot \e$ = 0
+
+\item $\bv{h}^* = \X\bbeta$ where $\bv{h}^*$ is the $n$-dimensional column vector of all the $h^*(\x_{i \cdot})$'s
+\item $\bv{h}^* \cdot \e$ = 0 
+
+\item $\XXtXinvXt \q_{\cdot 3} = \zerovec_n$
+
+\item $\X\b = \yhat$
+\item $\Q\b = \yhat$
+
+\item $\Q\Q^\top\X = \X$
+\item $\I_n - \Q\Q^\top = \H_\perp$
+
+
+\item An analysis of the entries in $\H_\perp$ can inform us if $g$ is overfit
+
+\item Gram-Schmidt will produce the same $\Q$ if it is run on $\X'$ whose columns are the same as $\X$ except in a different order
+\item $\colsp{\X\R} = \colsp{\Q}$
+\end{enumerate}
+
+
+\subquestionwithpoints{7} Prove $\sum_{i=1}^n \hat{y}_i = n\ybar$ for all $p$.\spc{5}
+
+\subquestionwithpoints{7} On an axis below, plot the in-sample RMSE for this algorithm as a function of $p$ using a line or points. Label the axes and label all critical points using the notation provided in the problem header.\\
+
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=4in]{axes.png}
+\end{figure}
+
+\eenum
+
+
+\problem Assume $\X$ and $\y$ have the same values as in the previous problem but now the coefficients are generated via a new algorithm $\mathcal{A}_{new}$,
+
+\beqn
+\b_{new} = \displaystyle\argmin_{\w \in \reals^{p + 1}}\braces{ \sum_{i=1}^n  (y_i - \x_{i \cdot} \w)^4},
+\eeqn
+
+\noindent which produces new predictions $\yhat_{new}$ and new residuals $\e_{new}$.
+
+\benum
+
+\subquestionwithpoints{8} Circle the letters of all the following that are \textbf{true}.
+
+\begin{enumerate}[(a)]
+\item This algorithm is OLS
+\item $\X\b_{new} = \yhat_{new}$
+\item $\b_{new} = \b$
+\item $\yhat_{new} = \yhat$
+\item $\normsq{\y} = \normsq{\yhat_{new}} + \normsq{\e_{new}}$
+\item $\yhat_{new} \in \colsp{\X}$
+\item $\yhat_{new} \in \colsp{\Q}$
+\item $\e_{new} \in \colsp{\X_\perp}$
+\end{enumerate}
+
+\eenum
+
+
+\problem Assume a dataset $\mathbb{D} := \angbraces{\X, \y}$ where $X$ is an $n \times p$ matrix and $\y$ is an $n \times 1$ column vector. The dataset is split into a \text{train} and \text{test} set of $n_{\text{train}}$ observations and $n_{\text{test}}$ observations. Let $\mathbb{D}_{\text{train}} := \angbraces{\X_{\text{train}}, \y_{\text{train}}}$ and $\mathbb{D}_{\text{test}} := \angbraces{\X_{\text{test}}, \y_{\text{test}}}$ just like we did in class and lab by taking a random partition of the indices $1, 2, \ldots, n$. Let $g_{\text{train}} = \mathcal{A}(\mathbb{D}_{\text{train}}, \mathcal{H})$, $g_{\text{test}} = \mathcal{A}(\mathbb{D}_{\text{test}}, \mathcal{H})$ and $ g_{\text{final}} = \mathcal{A}(\mathbb{D}, \mathcal{H})$. We will assume stationarity of the phenomenon of interest as it related to the covariates in $\X$.
+
+\benum
+
+\subquestionwithpoints{15} Record the letters of all the following that are \textbf{true}. Your answer will consist of a string (e.g. \texttt{aebgd}) where the order of the letters does not matter.
+
+\begin{enumerate}[(a)]
+
+\item If stationarity is not assumed, then supervised learning models cannot be validated without collecting data in addition to what was provided in $\mathbb{D}$
+\item Validation in-sample is always dishonest
+
+\item If $\mathbb{D}_{\text{train}}$ and $\mathbb{D}_{\text{test}}$ were generated from a different random partition of the indicies $1, 2, \ldots, n$, then the oos validation metrics are expected to be the same as the first random partition
+
+\item  $n_{\text{train}} + n_{\text{test}}  = n$
+
+\item If $K=2$, then $\dime{\y_{\text{train}}} = \dime{\y_{\text{test}}}$
+\item If $K=n$, then $\dime{\y_{\text{train}}} = \dime{\y_{\text{test}}}$
+
+\item RMSE is calculated by using predictions from $g_{\text{train}}$ and comparing them to $\y_{\text{train}}$
+\item oosRMSE can be calculated by using predictions from $g_{\text{test}}$ and comparing them to $\y_{\text{test}}$
+
+\item If $K > 2$, then oosRMSE will likely be the same as the RMSE of $g_{\text{train}}$ when used to predict on future observations
+\item If $K > 2$, then oosRMSE will likely be higher than the RMSE of $g_{\text{train}}$ when used to predict on future observations
+
+\item If $K > 2$, then oosRMSE will likely be the same as the RMSE of $g_{\text{test}}$ when used to predict on future observations
+\item If $K > 2$, then oosRMSE will likely be higher than the RMSE of $g_{\text{test}}$ when used to predict on future observations
+
+\item If $K > 2$, then oosRMSE will likely be the same as the RMSE of $g_{\text{final}}$ when used to predict on future observations
+\item If $K > 2$, then oosRMSE will likely be higher than the RMSE of $g_{\text{final}}$ when used to predict on future observations
+
+\item The larger $K$ becomes, the less trustworthy oos performance statistics become
+
+\end{enumerate}
+\eenum
+
+\pagebreak
+
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=7in]{cut_is_ideal.png}
+\caption{A scatterplot of $y = $ \texttt{cut\_is\_ideal} on $x_1$ = \texttt{table} and $x_2$ = \texttt{depth}.}
+\end{figure}
+
+
+\end{document}

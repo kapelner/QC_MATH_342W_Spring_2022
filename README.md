@@ -75,7 +75,7 @@ My lectures can be listened to as youtube tracks and lecture notes are also scan
 ## Exams
 
 * Midterm I is Wed, Mar 23 (in class) [(exam)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/exams/midterm1/midterm1.pdf) [(solutions)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/exams/midterm1/midterm1_solutions.pdf)
-* Midterm II is Mon, May 16 (in class) 
+* Midterm II is Mon, May 16 (in class) [(exam)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/exams/midterm2/midterm2.pdf) [(solutions)](https://github.com/kapelner/QC_Math_342W_Spring_2022/blob/master/exams/midterm2/midterm2_solutions.pdf) 
 
 
 ## Practice Exams
