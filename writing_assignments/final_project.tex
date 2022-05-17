@@ -20,7 +20,7 @@ You will be writing a report about a prediction model for apartment selling pric
 
 
 \begin{table}[htp]
-\centering\small
+\centering\footnotesize
 \begin{tabular}{l|ccccccccc}
 \hline
 Northeast Queens		&11361& 11362,& 11363& 11364 \\
@@ -49,7 +49,7 @@ Median Error 	 & 5\%  	&  10\%	&  20\%  \\
 \end{tabular}
 \end{table}
 
-\noindent Unfortunately they do not report for Queens (nor for apartments only) so this will have to be our benchmark.  I imagine the collective brainpower of all of you plus the elementary concepts and tools from this class can produce more accurate predictions of apartment prices.\footnote{At the very least, I imagine you can score a pretty good job interview at Zillow if your predictive performance is any good.}
+\noindent Unfortunately they do not report for Queens (nor for apartments only) so this will have to be our benchmark.  I imagine the collective brainpower of all of you plus the elementary concepts and tools from this class can produce more accurate predictions of apartment prices.\footnote{At the very least, I imagine you can score a job interview at Zillow if your predictive performance is any good.}
 
 %You will be responsible for:
 %
@@ -122,7 +122,7 @@ Fit a vanilla OLS linear model. Comment on its in-sample error statistics and in
 
 \subsection*{3.3 Random Forest Modeling}
 
-Why should this be your choice of prediction model? Explain the theory as best as you could. Is it parametric / non-parametric? What did you gain by choosing this model? Lose? Was modeling an iterative process in some way? Do you think you underfit? Do you think you overfit? How were you able to know? Which variables do you believe have an effect on sale price that is truly causal, why and would you be able to prove it? Use the package \texttt{mlr} (or \texttt{mlr3}) to find the best tuning parameters for the RF model. Use these parameters to build the production model. If you cannot get \texttt{YARF} to work, use the canonical CRAN package \texttt{randomForest}.
+Why should this be your choice of prediction model? Explain the theory as best as you could. Is it parametric / non-parametric? What did you gain by choosing this model? Lose? Was modeling an iterative process in some way? Do you think you underfit? Do you think you overfit? How were you able to know? Which variables do you believe have an effect on sale price that is truly causal, why and would you be able to prove it? (Optional: use the package \texttt{mlr} (or \texttt{mlr3}) to find the best tuning parameters for the RF model and use these parameters to build the production model). If you cannot get \texttt{YARF} to work, use the canonical CRAN package \texttt{randomForest}.
 
 \subsection*{4. Performance Results for your Random Forest Model}
 
