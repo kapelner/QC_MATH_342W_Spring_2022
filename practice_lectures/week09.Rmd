@@ -5,7 +5,7 @@ date: "Apr 4, 2022"
 ---
 
 
-## For MA students only: Eigendecomposition in R and the Projection Matrix
+## Eigendecomposition in R and the Projection Matrix
 
 ```{r}
 B = array(seq(1, 4), dim = c(2, 2))

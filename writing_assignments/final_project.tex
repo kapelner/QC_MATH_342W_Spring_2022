@@ -7,11 +7,11 @@
 
 
 
-\title{Math 342W Final Project 2021}
+\title{Math 342W Final Project \the\year}
 
 \author{Professor Adam Kapelner}
-
-\date{Writeup due Tuesday, May 25, 11:59PM by email\\ \vspace{0.5cm} \footnotesize (this document last updated \today ~at \currenttime)}
+\date{Writeup due Tuesday, May 25, 11:59PM by email}
+%\date{Writeup due Tuesday, May 25, 11:59PM by email\\ \vspace{0.5cm} \footnotesize (this document last updated \today ~at \currenttime)}
 
 \begin{document}
 \maketitle
@@ -49,7 +49,9 @@ Median Error 	 & 5\%  	&  10\%	&  20\%  \\
 \end{tabular}
 \end{table}
 
-\noindent Unfortunately they do not report for Queens (nor for apartments only) so this will have to be our benchmark.  I imagine the collective brainpower of all of you plus the elementary concepts and tools from this class can produce more accurate predictions of apartment prices.\footnote{At the very least, I imagine you can score a job interview at Zillow if your predictive performance is any good.}
+\noindent Unfortunately they do not report for Queens (nor for apartments only) so this will have to be our benchmark.  I imagine the collective brainpower of all of you plus the elementary concepts and tools from this class can produce more accurate predictions of apartment prices.\footnote{At the very least, I imagine you can score a job interview at Zillow if your predictive performance is any good.} 
+
+\pagebreak
 
 %You will be responsible for:
 %
@@ -61,24 +63,26 @@ Median Error 	 & 5\%  	&  10\%	&  20\%  \\
 %\item validating
 %\end{itemize}
 
+Consider your reading audience as those who took this class and got an A in it; they are educated and high-level. You do not need to describe what a \qu{model} is nor how you do \qu{out of sample validation}, etc. You can just write freely. Thus, in many ways the \emph{writing task} of this assignment is easier than the modeling paper. This will give you time to concentrate on the actual data science: the cleaning, featurization, modeling and interpreting. 
+
 \section*{Deliverables}
 
-You will commit all files used for your project to your github repository under the subfolder \qu{final\_project}. You will also write a formal report to be emailed to me by the due date as a PDF. The formal report should look like below. Each section should address concepts given below. You can work together but please list your collaborators \inred{and you must do your own, individual writeup. No copying from others. No paraphrasing from others.} 
+You will commit all files used for your project to your github repository under the subfolder \qu{final\_project}. You will also write a formal report to be emailed to me by the due date as a PDF. The formal report should look like below, single-spaced. Each section should address concepts given below. The style should be a professional technical paper or a scientific report. That means no whimsical musings. Please do not use \texttt{knitR} from an Rmd file in RStudio to generate your PDF (it never looks nice). You can work together but please list your collaborators \inred{and you must do your own, individual writeup. No copying from others. No paraphrasing from others.}\\
 
 
 \begin{tcolorbox}[breakable, enhanced]
 
 \begin{center}
-[TITLE]\\~\\
+\LARGE{[TITLE]}\\~\\
 \footnotesize Final project for Math 342W Data Science at Queens College\\
 ~[date due]~
 \end{center}
 
 \begin{flushright}
-By [You]\\
+By [Your full name]\\
 In collaboration with:\\
-~[person 1]~\\
-~[person 2]~\\
+~[person 1's full name]~\\
+~[person 2's full name]~\\
 $\vdots$~~~\\
 \end{flushright}
 
@@ -124,9 +128,9 @@ Fit a vanilla OLS linear model. Comment on its in-sample error statistics and in
 
 Why should this be your choice of prediction model? Explain the theory as best as you could. Is it parametric / non-parametric? What did you gain by choosing this model? Lose? Was modeling an iterative process in some way? Do you think you underfit? Do you think you overfit? How were you able to know? Which variables do you believe have an effect on sale price that is truly causal, why and would you be able to prove it? (Optional: use the package \texttt{mlr} (or \texttt{mlr3}) to find the best tuning parameters for the RF model and use these parameters to build the production model). If you cannot get \texttt{YARF} to work, use the canonical CRAN package \texttt{randomForest}.
 
-\subsection*{4. Performance Results for your Random Forest Model}
+\subsection*{4. Performance Results}
 
-Report your oob goodness-of-fit metrics: $R^2$, $RMSE$ (no need for $MAE$ unless you want to report it) and interpret them. Report your estimate of generalization error as the same goodness-of-fit metrics: $R^2$, $RMSE$ and interpret these as well. How do you know this is a valid estimate of how the model will by-and-large perform on future predictions? In addition to using oob validation, do a hold-out test set validation as well and report the error metrics. Summarize these results in a figure or table. Did your random forest model beat the linear model? Why / why not?
+Report your in-sample and oos (or oob) goodness-of-fit metrics: $R^2$, $RMSE$ (no need for $MAE$ unless you want to report it) for all models in one clear table. Interpret them and compare the in-sample and oos within models and between models. Did your random forest model beat the linear model? Why / why not? How can you be confident that the oos estimates are a valid estimate of how the model will by-and-large perform on future predictions?  
 
 \subsection*{5. Discussion}
 
@@ -145,7 +149,7 @@ If you cited any articles, books, blogs, etc. Use APA format for biliographic en
 
 \subsubsection*{Code Appendix}
 
-Print all your code that was used to do this project here.
+Print all your code that was used to do this project here. If you are using \LaTeX, please use the \texttt{listings} package to present the code line-wrapped and syntax-colored nicely!
 
 \end{tcolorbox}
 
